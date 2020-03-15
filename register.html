@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLM | Register</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">M+</h1>
+            </div>
+            <p>Account Registration</p>
+            <form class="m-t" role="form">
+                <div class="form-group">
+                    <input id="username" type="text" class="form-control" placeholder="Username" required="">
+                </div>
+                <div class="form-group">
+                    <input id="password" type="password" class="form-control" placeholder="Password" required="">
+                </div>
+                <div class="form-group">
+                    <input id="verifyPassword" type="password" class="form-control" placeholder="Verify Password" required="">
+                </div>
+                <h3>Personal Information </h3>
+                <div class="form-group">
+                    <input id="firstName" type="text" class="form-control" placeholder="First Name" required="">
+                </div>
+                <div class="form-group">
+                    <input id="middleName" type="text" class="form-control" placeholder="Middle Name" required="">
+                </div>
+                <div class="form-group">
+                    <input id="lastName" type="text" class="form-control" placeholder="Last Name" required="">
+                </div>
+                
+                <div class="form-group">
+                    <select id="gender" type="text" class="form-control" placeholder="Placement" required="">
+                        <option selected>Gender</option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                    </select>
+                </div>
+
+                <h3>Contact Information</h3>
+                <div class="form-group">
+                    <input id="mobileNumber" type="text" class="form-control" placeholder="Mobile Number" required="">
+                </div>
+                <div class="form-group">
+                    <input id="email" type="text" class="form-control" placeholder="Email" required="">
+                </div>
+                <h3>Sponsor and Upline </h3>
+                <div class="form-group">
+                    <input id="sponsor" type="text" class="form-control" placeholder="Sponsor ID" required="">
+                </div>
+                <div class="form-group">
+                    <input id="upline" type="text" class="form-control" placeholder="Upline ID" required="">
+                </div>
+                <div class="form-group">
+                    <select id="placement" type="text" class="form-control" placeholder="Placement" required="">
+                        <option selected>Placement</option>
+                        <option value="left">left</option>
+                        <option value="right">right</option>
+                    </select>
+                </div>
+                
+                <h3> Activation </h3>
+                <div class="form-group">
+                    <input id="registrationCode" type="text" class="form-control" placeholder="Registration Code" required="">
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Agree the terms and policy </label></div>
+                </div>
+                <a href="#" id="submit-form" class="btn btn-lg btn-primary btn-block">Register</a>
+                <p class="text-muted text-center"><small>Already have an account?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="login.html">Login</a>
+            </form>
+            <p class="m-t"> <small>MLM web app &copy; 2019</small> </p>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+  
+<script>
+    document.getElementById("submit-form").addEventListener("click", check_info);
+    sessionStorage.clear();
+    function check_info() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var verifyPassword = document.getElementById("verifyPassword").value;
+        var firstName = document.getElementById("firstName").value;
+        var middleName = document.getElementById("middleName").value;
+        var lastName = document.getElementById("lastName").value;
+        var mobileNumber = document.getElementById("mobileNumber").value;
+        var email = document.getElementById("email").value;
+        var sponsor = document.getElementById("sponsor").value;
+        var upline = document.getElementById("upline").value;
+        var placement = document.getElementById("placement").value;
+        var registrationCode = document.getElementById("registrationCode").value; 
+        var maleCheck = $("#maleCheck").hasClass("checked");
+        var femaleCheck = $("#femaleCheck").hasClass("checked");
+        var genderMale = $("#genderMale").val();
+        var femaleCheck = $("#genderFemale").val();
+
+        if(maleCheck){
+        	gender = "male";
+        }
+
+        if(femaleCheck){
+        	gender = "female";
+        }
+
+
+
+        
+        
+        if (password == verifyPassword) {
+
+        	alert(gender);
+            const Http = new XMLHttpRequest();
+            //var server = "http://hantakserver/";
+             var server = "http://mlm/";
+
+            url = 'http://mlm/graph/register.php?username='+username+'&password='+password+'&firstName='+firstName+'&middleName='+middleName+'&lastName='+lastName+'&mobileNumber='+mobileNumber+'&email='+email+'&sponsor='+sponsor+'&upline='+upline+'&placement='+placement+'&registrationCode='+registrationCode+'';
+            console.log(url);
+            url = encodeURI(url);
+            Http.open("GET", url);
+
+            Http.send();
+
+            Http.onreadystatechange = (e) => {
+
+                if (Http.readyState == 4 && Http.status == 200) {
+                    sessionStorage.clear();
+                    registration = JSON.parse(Http.responseText);
+                    reg = registration.registration;
+                    console.log(registration);
+                    if (registration.message === "success") {
+                      localStorage.setItem("username", username);
+                      localStorage.setItem("password", password);
+                        window.location.href = "index.html";
+                    }else{
+                        alert(registration.message);
+                    }
+
+                }    
+                
+            };
+
+        } else {
+            alert("password did not match");
+        }
+      
+    }
+</script>
+
+
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+    </script>
+</body>
+
+</html>

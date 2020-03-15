@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>merkadu | Contacts</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color: white">
+    <div id="wrapper">
+        <div class="row">
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="input-group">
+            <input id="searchTerm" type="text" placeholder="Search" name="search" class="form-control input-lg">
+            <div class="input-group-btn">
+                <button class="search btn btn-lg btn-primary" type="submit">
+                    Search
+                </button>
+            </div>
+        </div>
+        <br>
+        <div id="itemList" class="row">
+        </div>
+
+
+    <div class="modal inmodal" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <form action="upload.php" class="dropzone" id="dropzonewidget">
+                                        <div class="dropzone-previews"></div>
+                                    </form>
+                                    <!--
+
+                                            <small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+                                        -->
+                                </div>
+                                <div class="modal-body">
+                                    <!--
+                                            <p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
+                                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                                remaining essentially unchanged.</p>
+                                            -->
+                                    
+                                    <div class="form-group"><label>Description</label> <input id="reportDescription" type="text" placeholder="Enter Report Description" class="form-control"></div>
+                                   
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="productCancel" type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                    <button id="reportSubmit" type="button" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+    </div>
+    </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.contact-box').each(function() {
+            animationHover(this, 'pulse');
+        });
+    });
+    var username = localStorage.getItem("username");
+    var password = localStorage.getItem("password");
+
+    sHttp = new XMLHttpRequest();
+    searchTerm = null;
+
+    //var server = "http://hantakserver/";
+    //var server = "http://merkadu/";
+    var server = window.location.hostname;
+    console.log(server);
+
+    url = 'http://merkadu.tk/graph/getuserinfo.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
+    sHttp.open("GET", url);
+
+    sHttp.send();
+
+    sHttp.onreadystatechange = (e) => {
+
+        if (sHttp.readyState == 4 && sHttp.status == 200) {
+           data = JSON.parse(sHttp.responseText);
+           localStorage.setItem("userinfo", JSON.stringify(data));
+            
+
+        };
+    };
+
+
+
+    Http = new XMLHttpRequest();
+    searchTerm = null;
+
+    //var server = "http://hantakserver/";
+    //var server = "http://merkadu/";
+    var server = window.location.hostname;
+    console.log(server);
+
+    url = 'http://merkadu.tk/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
+    console.log(url);
+    Http.open("GET", url);
+
+    Http.send();
+
+    Http.onreadystatechange = (e) => {
+
+        if (Http.readyState == 4 && Http.status == 200) {
+            console.log("global",JSON.parse(Http.responseText));
+            data = JSON.parse(Http.responseText);
+            //console.log(data);
+            for (var i = data.data.length - 1; i >= 0; i--) {
+                server = window.location.hostname;
+                picture = 'http://merkadu.tk/uploads/' + data.data[i].picture + '';
+                link = 'http://merkadu.tk/buy.html?id=' + data.data[i].id + '';
+                console.log(data);
+                name = data.data[i].name;
+                id = data.data[i].id;
+                description = data.data[i].description;
+                owner = data.data[i].productOwner;
+
+              	userinfo = localStorage.getItem("userinfo");
+              	userinfo = JSON.parse(userinfo);
+
+              	console.log("userinfos", userinfo.data[0].role);
+              	if(userinfo.data[0].role == "admin"){
+              		bannedUser = '<button id=' + id + ' type="submit"  class="banProduct btn-primary btn-lg">BanProduct</button>';
+              	}else{
+              		bannedUser = '';
+              	}
+
+                $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> '+owner+'</p><address><strong>Description</strong><br>'+description+'<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form > </div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><button id=' + id + ' type="submit"  class="banProduct btn-primary btn-lg">Report</button>'+bannedUser+'</div>');
+            }
+
+        };
+    };
+
+    $(".search").click(function(){
+    var username = localStorage.getItem("username");
+    var password = localStorage.getItem("password");
+    searchHttp = new XMLHttpRequest();
+    searchTerm = $("#searchTerm").val();
+
+    //var server = "http://hantakserver/";
+    //var server = "http://merkadu/";
+    server = window.location.hostname;
+
+    url = 'http://merkadu.tk/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
+    console.log(url);
+    searchHttp.open("GET", url);
+
+    searchHttp.send();
+
+    searchHttp.onreadystatechange = (e) => {
+
+        if (searchHttp.readyState == 4 && searchHttp.status == 200) {
+            console.log(JSON.parse(searchHttp.responseText));
+            data = JSON.parse(searchHttp.responseText);
+            //console.log(data);
+            $("#itemList").empty();
+            for (var i = data.data.length - 1; i >= 0; i--) {
+                server = window.location.hostname;
+                picture = 'http://merkadu.tk/uploads/'+data.data[i].picture+'';
+                link = 'http://merkadu.tk/buy.html?id=' + data.data[i].id + '';
+                console.log(data);
+                name = data.data[i].name;
+                id = data.data[i].id;
+                description = data.data[i].description;
+
+                userinfo = localStorage.getItem("userinfo");
+              	userinfo = JSON.parse(userinfo);
+
+              	console.log("userinfos", userinfo.data.role);
+              	if(userinfo.data[0].role == "admin"){
+              		bannedUser = '<button id=' + id + ' type="submit" class="banProduct btn-primary btn-lg">BanProduct</button>';
+              	}else{
+              		bannedUser = '';
+              	}
+
+
+                $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> '+owner+'</p><address><strong>Description</strong><br>'+description+'<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form > </div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button> '+bannedUser+'</div>');
+            }
+
+        };
+    };
+    });
+
+    $('.wrapper').on('click', '.banProduct', function() {
+    	id = this.id;
+    	banProductHttp = new XMLHttpRequest();
+            //var server = "http://hantakserver/";
+            //var server = "http://merkadu/";
+            server = window.location.hostname;
+
+            url = 'http://merkadu.tk/graph/bannedPostingProduct.php?userAccount='+username+'&username=' + username + '&password=' + password + '&productID=' + id + '&reportDescription=' + reportDescription + '';
+            console.log(url);
+            banProductHttp.open("GET", url);
+
+            banProductHttp.send();
+
+            banProductHttp.onreadystatechange = (e) => {
+
+                if (banProductHttp.readyState == 4 && banProductHttp.status == 200) {
+                    console.log(JSON.parse(banProductHttp.responseText));
+                    data = JSON.parse(banProductHttp.responseText);
+                    alert("success");
+
+                };
+            };
+
+    });
+    $('.wrapper').on('click', '.report', function() {
+    	id = this.id;
+    	reportDescription = $("#reportDescription").val();
+    	$("#reportSubmit").click(function(){
+    		reportSubmitHttp = new XMLHttpRequest();
+            //var server = "http://hantakserver/";
+            //var server = "http://merkadu/";
+            server = window.location.hostname;
+
+            url = 'http://merkadu.tk/graph/addReport.php?username=' + username + '&password=' + password + '&productID=' + id + '&reportDescription=' + reportDescription + '';
+            console.log(url);
+            reportSubmitHttp.open("GET", url);
+
+            reportSubmitHttp.send();
+
+            reportSubmitHttp.onreadystatechange = (e) => {
+
+                if (reportSubmitHttp.readyState == 4 && reportSubmitHttp.status == 200) {
+                    console.log(JSON.parse(reportSubmitHttp.responseText));
+                    data = JSON.parse(reportSubmitHttp.responseText);
+
+                };
+            };
+
+
+            $('#productCancel').click();
+    	});
+    });
+    $('.wrapper').on('click', '.buy', function() {
+        quantity = $('#' + this.id + 'Quantiy').val();
+        if (quantity == 0) {
+            alert("please input quantity");
+        } else {
+            this.innerText = "Added to cart";
+            Http = new XMLHttpRequest();
+            //var server = "http://hantakserver/";
+            //var server = "http://merkadu/";
+            server = window.location.hostname;
+
+            url = 'http://merkadu.tk/graph/addToCart.php?username=' + username + '&password=' + password + '&productID=' + this.id + '&quantity=' + quantity + '';
+            console.log(url);
+            Http.open("GET", url);
+
+            Http.send();
+
+            Http.onreadystatechange = (e) => {
+
+                if (Http.readyState == 4 && Http.status == 200) {
+                    console.log(JSON.parse(Http.responseText));
+                    data = JSON.parse(Http.responseText);
+
+                };
+            };
+
+        }
+
+    });
+    </script>
+</body>
+
+</html>

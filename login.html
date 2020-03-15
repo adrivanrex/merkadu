@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merkadu| Login</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">M+</h1>
+            </div>
+            <!--
+            <h3>Welcome to IN+</h3>
+            <p>Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
+                
+            </p>
+            <p>Login in. To see it in action.</p>
+            -->
+            <form class="m-t" role="form" action="index.html    ">
+                <div class="form-group">
+                    <input id="username" type="text" class="form-control" placeholder="Username" required="">
+                </div>
+                <div class="form-group">
+                    <input id="password" type="password" class="form-control" placeholder="Password" required="">
+                </div>
+                <a href="#" id="submit-form" class="btn btn-lg btn-primary btn-block">login</a>
+                <!--
+                <a href="#"><small>Forgot password?</small></a>
+                -->
+                <p class="text-muted text-center"><small>Do not have an account?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="http://merkaducentral.tk/register.html">Create an account</a>
+            </form>
+            <p class="m-t"> <small>Merkadu &copy; 2019</small> </p>
+            <p class="m-t"> <small><a href="http://merkaducentral.tk/terms/index.html">Terms and Services</a></small> </p>
+        </div>
+    </div>
+</body>
+<script>
+document.getElementById("submit-form").addEventListener("click", check_info);
+
+function check_info() {
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    const Http = new XMLHttpRequest();
+    //var server = "http://hantakserver/";
+    var server = "http://merkaducentral.tk/";
+
+    const url = ''+server+'/graph/userinfo.php?username=' + username + '&password=' + password + '';
+    console.log(url);
+    Http.open("GET", url);
+
+    Http.send();
+
+    Http.onreadystatechange = (e) => {
+
+        if (Http.readyState == 4 && Http.status == 200) {
+            console.log(JSON.parse(Http.responseText));
+            data = JSON.parse(Http.responseText);
+            if(data.login == 1){
+                localStorage.setItem("username", username);
+                localStorage.setItem("password", password);
+                window.location.href = "index.html";
+            }else{
+                alert("invalid username or password");
+            }
+        };
+    };
+};
+</script>
+
+</html>

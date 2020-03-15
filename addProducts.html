@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>merkadu | Products</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet">
+</head>
+
+<body style="background-color: white">
+    <div class="row border-bottom">
+        <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInUp">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <div class="ibox-tools">
+                            <button title="Create new cluster" data-toggle="modal" data-target="#productModal" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> <span class="bold">Add Product</span></button>
+                        </div>
+                    </div>
+                    <div class="modal inmodal" id="productModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <form action="upload.php" class="dropzone" id="dropzonewidget">
+                                        <div class="dropzone-previews"></div>
+                                    </form>
+                                    <!--
+
+                                            <small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+                                        -->
+                                </div>
+                                <div class="modal-body">
+                                    <!--
+                                            <p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
+                                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                                remaining essentially unchanged.</p>
+                                            -->
+                                    <div class="form-group"><label>Store</label> <select id="storeName" type="text">
+                                        </select></div>
+                                    <div class="form-group"><label>Name</label> <input id="productName" type="text" placeholder="Enter Product Name" class="form-control"></div>
+                                    <div class="form-group"><label>Description</label> <input id="productDescription" type="text" placeholder="Enter Product Description" class="form-control"></div>
+                                    <div class="form-group"><label>Price</label> <input id="unitPrice" type="number" placeholder="Enter Product Price" class="form-control"></div>
+                                    <div class="form-group"><label>Quantity</label> <input id="productQuantity" type="number" placeholder="Enter Product Quantity" class="form-control"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="productCancel" type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                    <button id="productSubmit" type="button" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal inmodal" id="editProductModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <form action="upload.php" class="dropzone" id="dropzonewidget">
+                                        <div class="dropzone-previews"></div>
+                                    </form>
+                                    <!--
+
+                                            <small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+                                        -->
+                                </div>
+                                <div class="modal-body">
+                                    <!--
+                                            <p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
+                                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                                remaining essentially unchanged.</p>
+                                            -->
+                                    <div class="form-group"><label>Name</label> <input id="editProductName" type="text" placeholder="Enter Product Name" class="form-control"></div>
+                                    <div class="form-group"><label>Description</label> <input id="editProductDescription" type="text" placeholder="Enter Product Description" class="form-control"></div>
+                                    <div class="form-group"><label>Price</label> <input id="editUnitPrice" type="number" placeholder="Enter Product Price" class="form-control"></div>
+                                    <div class="form-group"><label>Quantity</label> <input id="editProductQuantity" type="number" placeholder="Enter Product Quantity" class="form-control"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="editProductCancel" type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                    <button type="button" class="editProductSubmit btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row m-b-sm m-t-sm">
+                            <div class="col-md-1">
+                                
+                            </div>
+                            <div class="col-md-11">
+                            	<!--
+                                <div class="input-group"><input id="searchAddProducts" type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
+                                        <button id="searchAddProductsSubmit" type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+                            	</div>
+                            	-->
+                        </div>
+                        <div class="project-list">
+                            <table class="table table-hover">
+                                <tbody id="productList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/plugins/dropzone/dropzone.js"></script>
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    <script>
+    $(document).ready(function() {
+
+        $('#loading-example-btn').click(function() {
+            btn = $(this);
+            simpleLoad(btn, true)
+
+            // Ajax example
+            //                $.ajax().always(function () {
+            //                    simpleLoad($(this), false)
+            //                });
+
+            simpleLoad(btn, false)
+        });
+    });
+
+    function simpleLoad(btn, state) {
+        if (state) {
+            btn.children().addClass('fa-spin');
+            btn.contents().last().replaceWith(" Loading");
+        } else {
+            setTimeout(function() {
+                btn.children().removeClass('fa-spin');
+                btn.contents().last().replaceWith(" Refresh");
+            }, 2000);
+        }
+    }
+
+
+
+    //console.log(Dropzone);
+    //Dropzone.autoDiscover = false;
+    var fileList = new Array;
+    var i = 0;
+    $(".dz-default").empty();
+    $(".dz-default").removeClass(".dz-message");
+
+    $(".dz-default").append('<span class="new-message">Drop image here to upload (or click)</span>');
+
+    $("#productSubmit").click(function() {
+    	$(".dz-default").removeClass(".dz-message")
+        message = $(".dz-success").val();
+        $(".dz-message").empty();
+    
+        console.log(message);
+        if (message == undefined) {
+            alert("add an image");
+        }
+    });
+
+    $(".editProductSubmit").click(function() {
+    	$(".dz-default").removeClass(".dz-message")
+        message = $(".dz-success").val();
+        $(".dz-message").empty();
+   
+        if (message == undefined) {
+            alert("please add image");
+        }
+    });
+
+    Dropzone.options.dropzonewidget = {
+        init: function() {
+
+            this.on("success", function(file, serverFileName) {
+                fileList[i] = { "serverFileName": serverFileName, "fileName": file.name, "fileId": i };
+                console.log(fileList[0]);
+
+
+
+                $(".editProductSubmit").click(function() {
+                	$(".dz-default").removeClass(".dz-message")
+                    message = $(".dz-success").val();
+                    $(".dz-message").empty();
+                    console.log("message",message);
+
+
+                    if (message == undefined) {
+                        alert("please add image");
+                    }
+
+                    editProduct = new XMLHttpRequest();
+                    server = window.location.hostname;
+
+                    name = $("#editProductName").val();
+                    description = $("#editProductDescription").val();
+                    quantity = $("#editProductQuantity").val();
+                    unitPrice = $("#editUnitPrice").val();
+                    picture = fileList[0]["serverFileName"];
+                    console.log("name",this.id);
+                    id = this.id;
+
+                    var productID = id.replace("editProduct", "");
+
+
+                    url = 'http://merkadu.tk/graph/editProduct.php?username=' + username + '&password=' + password + '&name=' + name + '&description=' + description + '&quantity=' + quantity + '&unitPrice=' + unitPrice + '&picture=' + picture + '&productID='+productID+'';
+                    console.log(url);
+                    editProduct.open("GET", url);
+                    //console.log(url);
+                    editProduct.send();
+
+                    editProduct.onreadystatechange = (e) => {
+                        if (editProduct.readyState == 4 && editProduct.status == 200) {                       
+                            data = JSON.parse(editProduct.responseText);
+                            console.log(editProduct.responseText);
+                            
+                                $("#editProductCancel").click();
+                            
+                        };
+                    }
+                });
+                $("#productSubmit").click(function() {
+
+                    $('div.dz-success').remove();
+                    $("#dropzonewidget").removeClass("dz-started");
+
+                    $("#dropzonewidget").append('<div class="dz-default dz-message"><span class="new-message">Drop image here to upload (or click)</span></div>');
+
+                    productName = $("#productName").val();
+                    productDescription = $("#productDescription").val();
+                    picture = fileList[0]["serverFileName"];
+                    username = localStorage.getItem("username");
+                    password = localStorage.getItem("password");
+                    storeName = $("#storeName").val();
+                    unitPrice = $("#unitPrice").val();
+                    quantity = $("#productQuantity").val();
+                    addproduct = Http = new XMLHttpRequest();
+                    server = window.location.hostname;
+
+
+                    if (storeName == undefined) {
+
+                        $("#createStore").click();
+                    } else {
+                        //alert(storeName);
+
+
+                        url = 'http://merkadu.tk/graph/addProduct.php?username=' + username + '&password=' + password + '&productName=' + productName + '&productDescription=' + productDescription + '&picture=' + picture + '&storeName=' + storeName + '&unitPrice=' + unitPrice + '&quantity=' + quantity + '';
+                        addproduct.open("GET", url);
+                        console.log(url);
+                        addproduct.send();
+
+                        Http.onreadystatechange = (e) => {
+                            data = JSON.parse(addproduct.responseText);
+                            if (data.status == 1) {
+                                $("#productCancel").click();
+                            }
+
+                            if(data.status == 2){
+                            	alert(data.message);
+                            }
+
+                        };
+
+
+                    }
+
+
+
+
+                });
+
+                i++;
+
+            });
+            this.on("removedfile", function(file) {
+                var rmvFile = "";
+                for (f = 0; f < fileList.length; f++) {
+
+                    if (fileList[f].fileName == file.name) {
+                        rmvFile = fileList[f].serverFileName;
+
+                    }
+
+                }
+
+                if (rmvFile) {
+                    $.ajax({
+                        url: "http://merkadu.tk/delete_temp_files.php",
+                        type: "POST",
+                        data: { "fileList": rmvFile }
+                    });
+                }
+            });
+
+        },
+        url: "http://merkadu.tk/upload.php",
+    };
+    username = localStorage.getItem("username");
+    password = localStorage.getItem("password");
+
+    Http = new XMLHttpRequest();
+    //var server = "http://hantakserver/";
+    server = "http://merkadu.tk";
+
+    url = '' + server + '/graph/storeList.php?username=' + username + '&password=' + password + '';
+    console.log(url);
+    Http.open("GET", url);
+
+    Http.send();
+
+    Http.onreadystatechange = (e) => {
+
+        if (Http.readyState == 4 && Http.status == 200) {
+            //console.log(JSON.parse(Http.responseText));
+            data = JSON.parse(Http.responseText);
+
+            data = data.data;
+            for (var i = data.length - 1; i >= 0; i--) {
+                //console.log(data[i]);
+                $("#storeName").append('<option value="' + data[i]["name"] + '"> ' + data[i]["name"] + ' </option>');
+            }
+        };
+    };
+
+    $("#searchAddProductsSubmit").click(function(){
+    	//alert(0);
+    });
+    </script>
+</body>
+
+</html>

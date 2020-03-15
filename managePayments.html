@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>merkadu | Products</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body style="background-color: white">
+
+        
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+
+        </nav>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="ibox-content p-xl">
+                            <div class="row">
+                              
+
+                            <div style="height:300px" class="table-responsive m-t">
+                                <table class="table invoice-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Item List</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Price</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="cartItems">
+                                    
+                                    <!--
+                                    <tr>
+                                        <td><div><strong>Angular JS & Node JS Application</strong></div>
+                                            <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small></td>
+                                        <td>3</td>
+                                        <td>$420.00</td>
+                                        <td>$1033.20</td>
+                                    </tr>
+                                    -->
+                                    </tbody>
+                                </table>
+                            </div><!-- /table-responsive -->
+
+                            <table class="table invoice-total">
+                                <tbody>
+                            
+                                <tr>
+                                    <td><strong>TOTAL :</strong></td>
+                                    <td id="cartTotal"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-right">
+                                <button class="btn pay btn-primary">Make A Payment</button>
+                            </div>
+                            <!--
+                            <div class="well m-t"><strong>Comments</strong>
+                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less
+                            </div>
+
+                            -->
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            $('#loading-example-btn').click(function () {
+                btn = $(this);
+                simpleLoad(btn, true)
+
+                // Ajax example
+//                $.ajax().always(function () {
+//                    simpleLoad($(this), false)
+//                });
+
+                simpleLoad(btn, false)
+            });
+        });
+
+        function simpleLoad(btn, state) {
+            if (state) {
+                btn.children().addClass('fa-spin');
+                btn.contents().last().replaceWith(" Loading");
+            } else {
+                setTimeout(function () {
+                    btn.children().removeClass('fa-spin');
+                    btn.contents().last().replaceWith(" Refresh");
+                    
+                }, 2000);
+            }
+        }
+
+        
+
+        function getCartList(){
+
+            CartList = new XMLHttpRequest();
+            //var server = "http://hantakserver/";
+            var server = "http://merkadu.tk/";
+
+            url = 'http://merkadu.tk/graph/cartList.php?username=' + username + '&password=' + password +'';
+            //console.log(url);
+            CartList.open("GET", url);
+
+            CartList.send();
+            
+            CartList.onreadystatechange = (e) => {
+
+                if (CartList.readyState == 4 && CartList.status == 200) {
+                    //console.log(JSON.parse(Http.responseText));
+                    data = JSON.parse(CartList.responseText);
+                    $("#cartItems").empty();
+                    //console.log(data.data.length);
+                    for (var i = data.data.length - 1; i >= 0; i--) {
+                        productName = data.data[i]["productName"];
+                        productDescription = data.data[i]["productDescription"];
+                        quantity = data.data[i]["quantity"];
+                        productUnitPrice = data.data[i]["productUnitPrice"];
+                        totalProductPrice = data.data[i]["totalPrice"];
+                        id = data.data[i]["id"];
+
+                        //console.log("list", id);
+
+                        //console.log(productName);
+                    
+                        $("#cartItems").append('<tr><td><div><strong>'+productName+'</strong></div><small>'+productDescription+'</small></td><td>'+quantity+'</td><td>'+productUnitPrice+'</td><td>'+totalProductPrice+'<td><button id="'+id+'"class="remove btn btn-primary"><i class="fa fa-close"></i> </button></td></tr>');
+                        
+                    }
+                    
+                };
+            };
+
+
+        }
+
+
+        
+
+         
+        $('.wrapper').on('click', '.pay', function() {
+
+        var server = "http://merkadu.tk/";
+
+        url = 'http://merkadu.tk/graph/pay.php?username=' + username + '&password=' + password +'';
+        console.log(url);
+        Http.open("GET", url);
+
+        Http.send();
+
+        Http.onreadystatechange = (e) => {
+
+            if (Http.readyState == 4 && Http.status == 200) {
+                console.log(JSON.parse(Http.responseText));
+                data = JSON.parse(Http.responseText);
+                console.log("status", data.data);
+                if(data.data == 1){
+                    //alert(data.message);
+                    
+                    getCartTotal();
+                    getCartList();
+                    document.location = "purchased.html";
+                }else{
+                    alert("insufficient fund");
+                }
+            };
+            };
+            
+        });
+        
+        $('#cartItems').on('click', '.remove', function() {
+
+        getCartTotal();
+
+        Http = new XMLHttpRequest();
+        //var server = "http://hantakserver/";
+        var server = "http://merkadu.tk/";
+
+        url = 'http://merkadu.tk/graph/removeFromCart.php?username=' + username + '&password=' + password +'&ProductFromCartID='+this.id+'';
+        //console.log(url);
+        Http.open("GET", url);
+
+        Http.send();
+
+        Http.onreadystatechange = (e) => {
+
+            if (Http.readyState == 4 && Http.status == 200) {
+                console.log(JSON.parse(Http.responseText));
+                data = JSON.parse(Http.responseText);
+                for (var i = data.data.length - 1; i >= 0; i--) {}
+            };
+
+            $("#cartItems").empty();
+            getCartList();
+            getCartTotal();
+        };
+    });
+        
+    setInterval(function () {
+                    getCartList();
+                    getCartTotal();
+                }, 1000);
+
+        //getCartTotal();
+        function getCartTotal(){
+            cartItems = new XMLHttpRequest();
+            var server = "http://merkadu.tk/";
+            url = 'http://merkadu.tk/graph/totalCartItems.php?username=' + username + '&password=' + password +'';
+            //console.log(url);
+            cartItems.open("GET", url);
+
+            cartItems.send();
+
+            cartItems.onreadystatechange = (e) => {
+                data = JSON.parse(cartItems.responseText);
+                //console.log(data);
+                $("#cartTotal").empty();
+                $("#cartTotal").append(data.data);
+
+
+        }
+        }
+        
+
+    </script>
+</body>
+
+</html>
