@@ -217,7 +217,7 @@
                     var productID = id.replace("editProduct", "");
 
 
-                    url = 'http://merkadu.tk/graph/editProduct.php?username=' + username + '&password=' + password + '&name=' + name + '&description=' + description + '&quantity=' + quantity + '&unitPrice=' + unitPrice + '&picture=' + picture + '&productID='+productID+'';
+                    url = '/graph/editProduct.php?username=' + username + '&password=' + password + '&name=' + name + '&description=' + description + '&quantity=' + quantity + '&unitPrice=' + unitPrice + '&picture=' + picture + '&productID='+productID+'';
                     console.log(url);
                     editProduct.open("GET", url);
                     //console.log(url);
@@ -259,7 +259,7 @@
                         //alert(storeName);
 
 
-                        url = 'http://merkadu.tk/graph/addProduct.php?username=' + username + '&password=' + password + '&productName=' + productName + '&productDescription=' + productDescription + '&picture=' + picture + '&storeName=' + storeName + '&unitPrice=' + unitPrice + '&quantity=' + quantity + '';
+                        url = '/graph/addProduct.php?username=' + username + '&password=' + password + '&productName=' + productName + '&productDescription=' + productDescription + '&picture=' + picture + '&storeName=' + storeName + '&unitPrice=' + unitPrice + '&quantity=' + quantity + '';
                         addproduct.open("GET", url);
                         console.log(url);
                         addproduct.send();
@@ -300,7 +300,7 @@
 
                 if (rmvFile) {
                     $.ajax({
-                        url: "http://merkadu.tk/delete_temp_files.php",
+                        url: "/delete_temp_files.php",
                         type: "POST",
                         data: { "fileList": rmvFile }
                     });
@@ -308,7 +308,7 @@
             });
 
         },
-        url: "http://merkadu.tk/upload.php",
+        url: "/upload.php",
     };
     username = localStorage.getItem("username");
     password = localStorage.getItem("password");
@@ -317,7 +317,7 @@
     //var server = "http://hantakserver/";
     server = "http://merkadu.tk";
 
-    url = '' + server + '/graph/storeList.php?username=' + username + '&password=' + password + '';
+    url = '/graph/storeList.php?username=' + username + '&password=' + password + '';
     console.log(url);
     Http.open("GET", url);
 

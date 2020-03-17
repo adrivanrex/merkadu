@@ -8,7 +8,11 @@ $password = $_GET["password"];
 
 
 session_start();
+/**
 header('Access-Control-Allow-Origin: *');
+**/
+
+header('Access-Control-Allow-Origin: http://merkadu.tk', false);
 header('Access-Control-Allow-Credentials', 'Content-Type');
 header('Content-Type: application/json');
 

@@ -13,25 +13,28 @@ class ManageUsers{
         return $this->link;
     }
 
+function registerUsers($username,$password,$firstName,$middleName,$lastName,$mobileNumber,$email,$streetAddress,$secondAddress,$postalCode,$city,$bdayYear,$bdayMonth,$bdayDay,$gender){
+        $datetime = date_create()->format('Y-m-d H:i:s');
+        $role = "user";
+        $accountLock = false;
+        $lockedTime = $datetime;
+        $unlockTime = $datetime;
+        $reg_time = $datetime;
 
-    function registerUsers($username,$password,$ip_address,$reg_time,$reg_date,$paypal,$referalUsername,$countryName,$countryContinent,$countryCurrency){
-        $query = $this->link->prepare("INSERT INTO users (username,password,ip_address,reg_time,reg_date,paypal,referalUsername,countryName,countryContinent,countryCurrency) VALUES (?,?,?,?,?,?,?,?,?,?)");
-        $values = array($username,$password,$ip_address,$reg_time,$reg_date,$paypal,$referalUsername,$countryName,$countryContinent,$countryCurrency);
-        $query->execute($values);
-        $counts = $query->rowCount();
-        
-        $balance = 10;
-        $query = $this->link->prepare("INSERT INTO balance (username,balance) VALUES (?,?)");
-        $values = array($username,$balance);
-        $query->execute($values);
+        $query = $this->link->prepare("INSERT INTO mlm.users (username,password,firstName,middleName,lastName,mobileNumber,email,reg_time,unlockTime,lockedTime,year,month,day) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    $values = array($username,$password,$firstName,$middleName,$lastName,$mobileNumber,$email,$reg_time,$unlockTime,$lockedTime,$bdayYear,$bdayMonth,$bdayDay);
 
-        $query = $this->link->prepare("INSERT INTO userinfo (username,countryName,countryContinent,countryCurrency) VALUES (?,?,?,?)");
-        $values = array($username,$countryName,$countryContinent,$countryCurrency);
-        $query->execute($values);
+                    $query->execute($values);
+                    $counts = $query->rowCount();
+                    $accountLock = false;
 
-        return $counts;
+                    $status = "Open";
 
+                     $query = $this->link->prepare("INSERT INTO mlm.userinfo (username,firstName,middleName,lastName,mobileNumber,email,reg_time,streetAddress,secondAddress,postalCode,city,role,accountLock,lockedTime,unlockTime,bdayYear,bdayMonth,bdayDay,gender,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    $values = array($username,$firstName,$middleName,$lastName,$mobileNumber,$email,$reg_time,$streetAddress,$secondAddress,$postalCode,$city,$role,$accountLock,$lockedTime,$unlockTime,$bdayYear,$bdayMonth,$bdayDay,$gender,$status);
+                    $query->execute($values);
 
+        return $counts;;
 
     }
 
@@ -47,7 +50,7 @@ class ManageUsers{
 
         function checkBalance($username){
 
-        $query = $this->link->query("SELECT * FROM balance WHERE username='$username'");
+        $query = $this->link->query("SELECT * FROM mlm.balance WHERE username='$username'");
        
         $rowCount = $query->rowCount();
         if($rowCount == 1){
@@ -63,7 +66,7 @@ class ManageUsers{
 
 
     function CheckUserExist($username){
-        $query = $this->link->query("SELECT * FROM users WHERE username = '$username'");
+        $query = $this->link->query("SELECT * FROM mlm.users WHERE username = '$username'");
         $rowcount = $query->rowCount();
         return $rowcount;
     }

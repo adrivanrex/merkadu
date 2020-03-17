@@ -90,7 +90,7 @@
     var server = window.location.hostname;
     console.log(server);
 
-    url = 'http://merkadu.tk/graph/getuserinfo.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
+    url = '/graph/getuserinfo.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
     sHttp.open("GET", url);
 
     sHttp.send();
@@ -115,7 +115,7 @@
     var server = window.location.hostname;
     console.log(server);
 
-    url = 'http://merkadu.tk/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
+    url = '/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
     console.log(url);
     Http.open("GET", url);
 
@@ -129,14 +129,14 @@
             //console.log(data);
             for (var i = data.data.length - 1; i >= 0; i--) {
                 server = window.location.hostname;
-                picture = 'http://merkadu.tk/uploads/' + data.data[i].picture + '';
-                link = 'http://merkadu.tk/buy.html?id=' + data.data[i].id + '';
+                picture = '/uploads/' + data.data[i].picture + '';
+                link = '/buy.html?id=' + data.data[i].id + '';
                 console.log(data);
                 name = data.data[i].name;
                 id = data.data[i].id;
                 description = data.data[i].description;
                 owner = data.data[i].productOwner;
-
+                price = data.data[i].unitPrice;
               	userinfo = localStorage.getItem("userinfo");
               	userinfo = JSON.parse(userinfo);
 
@@ -147,7 +147,7 @@
               		bannedUser = '';
               	}
 
-                $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> '+owner+'</p><address><strong>Description</strong><br>'+description+'<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form > </div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><button id=' + id + ' type="submit"  class="banProduct btn-primary btn-lg">Report</button>'+bannedUser+'</div>');
+                $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> '+owner+'</p><address><strong>Description</strong><br>'+description+'<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:'+price+'</strong></h3> </div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit"  class="banProduct btn-primary btn-lg">Report</button>-->'+bannedUser+'</div>');
             }
 
         };
@@ -163,7 +163,7 @@
     //var server = "http://merkadu/";
     server = window.location.hostname;
 
-    url = 'http://merkadu.tk/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
+    url = '/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
     console.log(url);
     searchHttp.open("GET", url);
 
@@ -178,13 +178,13 @@
             $("#itemList").empty();
             for (var i = data.data.length - 1; i >= 0; i--) {
                 server = window.location.hostname;
-                picture = 'http://merkadu.tk/uploads/'+data.data[i].picture+'';
-                link = 'http://merkadu.tk/buy.html?id=' + data.data[i].id + '';
+                picture = '/uploads/'+data.data[i].picture+'';
+                link = '/buy.html?id=' + data.data[i].id + '';
                 console.log(data);
                 name = data.data[i].name;
                 id = data.data[i].id;
                 description = data.data[i].description;
-
+                price =  data.data[i].unitPrice;
                 userinfo = localStorage.getItem("userinfo");
               	userinfo = JSON.parse(userinfo);
 
@@ -196,7 +196,7 @@
               	}
 
 
-                $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> '+owner+'</p><address><strong>Description</strong><br>'+description+'<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form > </div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button> '+bannedUser+'</div>');
+                $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> '+owner+'</p><address><strong>Description</strong><br>'+description+'<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><>h3><strong>Price:</strong>'+price+'</h3></div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button>--> '+bannedUser+'</div>');
             }
 
         };
@@ -210,7 +210,7 @@
             //var server = "http://merkadu/";
             server = window.location.hostname;
 
-            url = 'http://merkadu.tk/graph/bannedPostingProduct.php?userAccount='+username+'&username=' + username + '&password=' + password + '&productID=' + id + '&reportDescription=' + reportDescription + '';
+            url = '/graph/bannedPostingProduct.php?userAccount='+username+'&username=' + username + '&password=' + password + '&productID=' + id + '&reportDescription=' + reportDescription + '';
             console.log(url);
             banProductHttp.open("GET", url);
 
@@ -236,7 +236,7 @@
             //var server = "http://merkadu/";
             server = window.location.hostname;
 
-            url = 'http://merkadu.tk/graph/addReport.php?username=' + username + '&password=' + password + '&productID=' + id + '&reportDescription=' + reportDescription + '';
+            url = '/graph/addReport.php?username=' + username + '&password=' + password + '&productID=' + id + '&reportDescription=' + reportDescription + '';
             console.log(url);
             reportSubmitHttp.open("GET", url);
 
@@ -266,7 +266,7 @@
             //var server = "http://merkadu/";
             server = window.location.hostname;
 
-            url = 'http://merkadu.tk/graph/addToCart.php?username=' + username + '&password=' + password + '&productID=' + this.id + '&quantity=' + quantity + '';
+            url = '/graph/addToCart.php?username=' + username + '&password=' + password + '&productID=' + this.id + '&quantity=' + quantity + '';
             console.log(url);
             Http.open("GET", url);
 
