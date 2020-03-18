@@ -102,7 +102,7 @@
 
         setInterval(function(){ 
             getCompletedOrderList();
-         }, 2000);
+         }, 10000);
 
         
         
@@ -111,7 +111,7 @@
         function getCompletedOrderList(){
             completedOrderList = new XMLHttpRequest();
                 var server = "http://merkadu.tk/";
-                url = 'http://merkadu.tk/graph/CompletedOrderList.php?username=' + username + '&password=' + password +'';
+                url = '/graph/CompletedOrderList.php?username=' + username + '&password=' + password +'';
                 //console.log(url);
                 completedOrderList.open("GET", url);
 

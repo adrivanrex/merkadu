@@ -30,7 +30,7 @@ $(document).ready(function () {
         server = window.location.hostname;
 
 
-        url = 'http://merkadu.tk/graph/storelist.php?username='+username+'&password='+password+'';
+        url = '/graph/storelist.php?username='+username+'&password='+password+'';
         test.open("GET", url);
         //console.log(url);
         test.send();
@@ -81,7 +81,7 @@ $(document).ready(function () {
         const server = window.location.hostname;
 
 
-        url = 'http://merkadu.tk/graph/productList.php?username='+username+'&password='+password+'';
+        url = '/graph/productList.php?username='+username+'&password='+password+'';
         Http.open("GET", url);
         //console.log(url);
         Http.send();
@@ -127,7 +127,7 @@ $('.wrapper').on('click', '.disableProduct', function() {
         server = window.location.hostname;
 
 
-        url = 'http://merkadu.tk/graph/removeProduct.php?username='+username+'&password='+password+'&productID='+this.id+'';
+        url = '/graph/removeProduct.php?username='+username+'&password='+password+'&productID='+this.id+'';
         removeProduct.open("GET", url);
         console.log(url);
         removeProduct.send();
@@ -152,7 +152,7 @@ $('.wrapper').on('click', '.editProduct', function() {
         server = window.location.hostname;
 
 
-        url = 'http://merkadu.tk/graph/productInfo.php?username='+username+'&password='+password+'&productID='+id+'';
+        url = '/graph/productInfo.php?username='+username+'&password='+password+'&productID='+id+'';
         editProduct.open("GET", url);
         console.log(url);
         editProduct.send();
@@ -202,7 +202,7 @@ $('.wrapper').on('click', '.editProduct', function() {
         server = window.location.hostname;
 
 
-        url = 'http://merkadu.tk/graph/createStore.php?username='+username+'&password='+password+'&storeName='+storeName+'&storeDescription='+storeDescription+'&primaryPicture='+primaryPicture+'';
+        url = '/graph/createStore.php?username='+username+'&password='+password+'&storeName='+storeName+'&storeDescription='+storeDescription+'&primaryPicture='+primaryPicture+'';
         Http.open("GET", url);
         //console.log(url);
         Http.send();

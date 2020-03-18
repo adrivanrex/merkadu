@@ -81,14 +81,14 @@
     }
 
     
-    setInterval(function(){ getIncomingOrderList(); }, 2000);
+    setInterval(function(){ getIncomingOrderList(); }, 10000);
 
     
 
     function getIncomingOrderList() {
         incomingOrderList = new XMLHttpRequest();
         var server = "http://merkadu.tk/";
-        url = 'http://merkadu.tk/graph/incomingOrderList.php?username=' + username + '&password=' + password + '';
+        url = '/graph/incomingOrderList.php?username=' + username + '&password=' + password + '';
         console.log(url);
         incomingOrderList.open("GET", url);
 
@@ -156,7 +156,7 @@
             
             acceptIncomingDelivery = new XMLHttpRequest();
             var server = "http://merkadu.tk/";
-            url = 'http://merkadu.tk/graph/acceptIncomingDelivery.php?username=' + username + '&password=' + password + '&purchasedID='+this.id+'';
+            url = '/graph/acceptIncomingDelivery.php?username=' + username + '&password=' + password + '&purchasedID='+this.id+'';
             console.log(url);
             acceptIncomingDelivery.open("GET", url);
 

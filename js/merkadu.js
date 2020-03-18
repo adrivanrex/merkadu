@@ -86,7 +86,7 @@ $(document).ready(function () {
     username = localStorage.getItem("username");
     password = localStorage.getItem("password");
     
-    url = ''+server+'/graph/userinfo.php?username='+username+'&password='+password+'';
+    url = '/graph/userinfo.php?username='+username+'&password='+password+'';
     console.log(url);
     Http.open("GET", url);
 
@@ -116,24 +116,7 @@ $(document).ready(function () {
     username = localStorage.getItem("username");
     password = localStorage.getItem("password");
     
-    domainSec = document.location.hostname;
-    if(domainSec !== server){
-        secHttp = new XMLHttpRequest();
-        domainSec = document.location.hostname;
-        secHttpurl = 'http://merkaducentral.tk/graph/sec.php?domain='+domainSec+'';
-        //console.log(url);
-        secHttp.open("GET", secHttpurl);
-
-        secHttp.send();
-
-        secHttp.onreadystatechange = (e) => {
-            if (secHttp.readyState == 4 && secHttp.status == 200) {
-
-                //data = JSON.parse(secHttp.responseText);
-            }
-
-        };
-    }
+    
     
 
     // MetsiMenu

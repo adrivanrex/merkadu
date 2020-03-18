@@ -83,9 +83,11 @@
                                 <i class="fa fa-shopping-cart"></i> <span id="cartBuy" class="label label-warning"></span>
                             </a>
                         </li>
+                        <!--
                         <li>
                             <a href="http://merkadu-support.tk"><i class="fa fa-question-circle fa-6"></i></a>
                         </li>
+                        -->
                         <li>
                             <a href="logout.php">
                                 <i class="fa fa-sign-out"></i> Log out
@@ -129,7 +131,8 @@
     <script>
     $(document).ready(function() {
         
-       
+         // Click on the checkbox
+
         server = window.location.hostname;
         setInterval(function(){ getCartBuyNumber(server); }, 1000);
 
@@ -141,7 +144,7 @@
             server = window.location.hostname;
             //var server = "http://merkadu/";
 
-            url = 'http://merkadu.tk/graph/cartList.php?username=' + username + '&password=' + password + '';
+            url = '/graph/cartList.php?username=' + username + '&password=' + password + '';
             //console.log(url);
             Http.open("GET", url);
 
@@ -344,6 +347,15 @@
 	}else{
 		document.location = 'login.html';
 	}
+
+    $(document).load(function () {
+     // code here
+     
+    document.getElementById("search").click(); 
+    document.getElementById("searchProduct").click(); 
+    });
+
+
 
     </script>
 </body>

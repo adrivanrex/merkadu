@@ -102,16 +102,16 @@
 
         setInterval(function(){ 
             getPurchasedList();
-         }, 2000);
+         }, 10000);
 
-        
+        getPurchasedList();
         
 
 
         function getPurchasedList(){
                 purchasedList = new XMLHttpRequest();
                 var server = "http://merkadu.tk/";
-                url = ''+server+'/graph/purchasedList.php?username=' + username + '&password=' + password +'';
+                url = '/graph/purchasedList.php?username=' + username + '&password=' + password +'';
                 //console.log(url);
                 purchasedList.open("GET", url);
 
@@ -161,7 +161,7 @@
 
             verifyDelivery = new XMLHttpRequest();
                 var server = "http://merkadu.tk/";
-                url = ''+server+'/graph/verifyDelivery.php?username=' + username + '&password=' + password +'&purchasedID='+purchasedID+'';
+                url = '/graph/verifyDelivery.php?username=' + username + '&password=' + password +'&purchasedID='+purchasedID+'';
                 console.log(url);
                 verifyDelivery.open("GET", url);
 

@@ -115,7 +115,7 @@
                     btn.children().removeClass('fa-spin');
                     btn.contents().last().replaceWith(" Refresh");
                     
-                }, 2000);
+                },6000);
             }
         }
 
@@ -127,7 +127,7 @@
             //var server = "http://hantakserver/";
             var server = "http://merkadu.tk/";
 
-            url = 'http://merkadu.tk/graph/cartList.php?username=' + username + '&password=' + password +'';
+            url = '/graph/cartList.php?username=' + username + '&password=' + password +'';
             //console.log(url);
             CartList.open("GET", url);
 
@@ -170,7 +170,7 @@
 
         var server = "http://merkadu.tk/";
 
-        url = 'http://merkadu.tk/graph/pay.php?username=' + username + '&password=' + password +'';
+        url = '/graph/pay.php?username=' + username + '&password=' + password +'';
         console.log(url);
         Http.open("GET", url);
 
@@ -185,8 +185,8 @@
                 if(data.data == 1){
                     //alert(data.message);
                     
-                    getCartTotal();
-                    getCartList();
+                    //getCartTotal();
+                    //getCartList();
                     document.location = "purchased.html";
                 }else{
                     alert("insufficient fund");
@@ -204,7 +204,7 @@
         //var server = "http://hantakserver/";
         var server = "http://merkadu.tk/";
 
-        url = 'http://merkadu.tk/graph/removeFromCart.php?username=' + username + '&password=' + password +'&ProductFromCartID='+this.id+'';
+        url = '/graph/removeFromCart.php?username=' + username + '&password=' + password +'&ProductFromCartID='+this.id+'';
         //console.log(url);
         Http.open("GET", url);
 
@@ -223,17 +223,17 @@
             getCartTotal();
         };
     });
-        
+    
     setInterval(function () {
                     getCartList();
                     getCartTotal();
-                }, 1000);
+                }, 9000);
 
         //getCartTotal();
         function getCartTotal(){
             cartItems = new XMLHttpRequest();
             var server = "http://merkadu.tk/";
-            url = 'http://merkadu.tk/graph/totalCartItems.php?username=' + username + '&password=' + password +'';
+            url = '/graph/totalCartItems.php?username=' + username + '&password=' + password +'';
             //console.log(url);
             cartItems.open("GET", url);
 
@@ -249,6 +249,8 @@
         }
         }
         
+        getCartList();
+        getCartTotal();
 
     </script>
 </body>

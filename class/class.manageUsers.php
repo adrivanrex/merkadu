@@ -34,6 +34,14 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
                     $values = array($username,$firstName,$middleName,$lastName,$mobileNumber,$email,$reg_time,$streetAddress,$secondAddress,$postalCode,$city,$role,$accountLock,$lockedTime,$unlockTime,$bdayYear,$bdayMonth,$bdayDay,$gender,$status);
                     $query->execute($values);
 
+        $balance = 100000;
+        $availableBalance = 10000;
+        $totalEncash = 0;
+        $query = $this->link->prepare("INSERT INTO mlm.balance (username,balance,availableBalance,totalEncash) VALUES (?,?,?,?)");
+        $values = array($username,$balance,$availableBalance,$totalEncash);
+        $query->execute($values);
+        $counts = $query->rowCount();
+
         return $counts;;
 
     }
@@ -264,8 +272,9 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         $query = $this->link->query("SELECT * FROM mlm.balance WHERE username = '$username'");
         $rowcount = $query->rowCount();
         $result = $query->fetchAll();
-        $availableBalance = $result[0]["availableBalance"];
 
+
+        $availableBalance = $result[0]["availableBalance"];
 
 
         if($availableBalance > 0){
