@@ -3062,13 +3062,13 @@
             }
         }
 
-        /**
+        
         selectedCountry = country[countryPick];
         countryName = selectedCountry["name"];
         countryContinent = selectedCountry["continent"];
         countryCurrency = selectedCountry["currency"];
         console.log(countryCurrency);
-        **/
+        
 
         if (password == verifyPassword) {
             if(gender == "Gender"){
@@ -3081,7 +3081,7 @@
              var server = "http://merkaducentral.tk/";
              
 
-            url = '/graph/register.php?username='+username+'&password='+password+'&firstName='+firstName+'&middleName='+middleName+'&lastName='+lastName+'&mobileNumber='+mobileNumber+'&email='+email+'&streetAddress='+streetAddress+'&secondAddress='+secondAddress+'&postalCode='+postalCode+'&state='+state+'&referalCompany='+referalCompany+'&city='+city+'&bdayYear='+year+'&bdayMonth='+month+'&bdayDay='+day+'&gender='+gender+'';
+            url = '/graph/register.php?username='+username+'&password='+password+'&firstName='+firstName+'&middleName='+middleName+'&lastName='+lastName+'&mobileNumber='+mobileNumber+'&email='+email+'&streetAddress='+streetAddress+'&secondAddress='+secondAddress+'&postalCode='+postalCode+'&state='+state+'&referalCompany='+referalCompany+'&city='+city+'&bdayYear='+year+'&bdayMonth='+month+'&bdayDay='+day+'&gender='+gender+'&country='+countryName+'&continent='+countryContinent+'&currency='+countryCurrency+'';
             console.log(url);
             url = encodeURI(url);
             Http.open("GET", url);

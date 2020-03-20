@@ -24,11 +24,13 @@ $registrationCode = $_GET['registrationCode'];
 $paypal = "none";
 $dateTime = date("H:i:s");
 
-/**
+
 $country = $_GET["country"];
 $continent = $_GET["continent"];
 $currency = $_GET["currency"];
 $state = $_GET["state"];
+
+/**
 $registrationCode = $_GET["registrationCode"];
 
 **/
@@ -63,7 +65,7 @@ $checkUser = $users->CheckUserExist($username);
 //var_dump($checkUpline);
 if($checkUser == 0){
 
-	$registration = $users->registerUsers($username,$password,$firstName,$middleName,$lastName,$mobileNumber,$email,$streetAddress,$secondAddress,$postalCode,$city,$bdayYear,$bdayMonth,$bdayDay,$gender);
+	$registration = $users->registerUsers($username,$password,$firstName,$middleName,$lastName,$mobileNumber,$email,$streetAddress,$secondAddress,$postalCode,$city,$bdayYear,$bdayMonth,$bdayDay,$gender,$country,$continent,$currency,$state);
 	$data = (object) array('registration' => 1,'message' => "success");
 	echo json_encode($data);
 

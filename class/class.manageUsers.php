@@ -13,7 +13,7 @@ class ManageUsers{
         return $this->link;
     }
 
-function registerUsers($username,$password,$firstName,$middleName,$lastName,$mobileNumber,$email,$streetAddress,$secondAddress,$postalCode,$city,$bdayYear,$bdayMonth,$bdayDay,$gender){
+function registerUsers($username,$password,$firstName,$middleName,$lastName,$mobileNumber,$email,$streetAddress,$secondAddress,$postalCode,$city,$bdayYear,$bdayMonth,$bdayDay,$gender,$country,$continent,$currency,$state){
         $datetime = date_create()->format('Y-m-d H:i:s');
         $role = "user";
         $accountLock = false;
@@ -30,8 +30,8 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
                     $status = "Open";
 
-                     $query = $this->link->prepare("INSERT INTO mlm.userinfo (username,firstName,middleName,lastName,mobileNumber,email,reg_time,streetAddress,secondAddress,postalCode,city,role,accountLock,lockedTime,unlockTime,bdayYear,bdayMonth,bdayDay,gender,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                    $values = array($username,$firstName,$middleName,$lastName,$mobileNumber,$email,$reg_time,$streetAddress,$secondAddress,$postalCode,$city,$role,$accountLock,$lockedTime,$unlockTime,$bdayYear,$bdayMonth,$bdayDay,$gender,$status);
+                     $query = $this->link->prepare("INSERT INTO mlm.userinfo (username,firstName,middleName,lastName,mobileNumber,email,reg_time,streetAddress,secondAddress,postalCode,city,role,accountLock,lockedTime,unlockTime,bdayYear,bdayMonth,bdayDay,gender,status,country,continent,currency,state) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    $values = array($username,$firstName,$middleName,$lastName,$mobileNumber,$email,$reg_time,$streetAddress,$secondAddress,$postalCode,$city,$role,$accountLock,$lockedTime,$unlockTime,$bdayYear,$bdayMonth,$bdayDay,$gender,$status,$country,$continent,$currency,$state);
                     $query->execute($values);
 
         $balance = 100000;
@@ -456,9 +456,9 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
     }
 
-    function globalSearch($searchTerm){
+    function globalSearch($searchTerm,$citySearchProduct){
         if($searchTerm){
-            $query = $this->link->query("SELECT * FROM products WHERE name = '$searchTerm'");
+            $query = $this->link->query("SELECT * FROM merkadu.products INNER JOIN mlm.userinfo ON merkadu.products.username=mlm.userinfo.username WHERE name='$searchTerm' AND city='$citySearchProduct'");
             $rowcount = $query->rowCount();
             if($rowcount){
                 $result = $query->fetchAll();
@@ -469,7 +469,7 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         }else{
             /** SELECT * FROM products ORDER BY RAND() **/
 
-            $query = $this->link->query("SELECT * FROM products");
+            $query = $this->link->query("SELECT * FROM merkadu.products INNER JOIN mlm.userinfo ON merkadu.products.username=mlm.userinfo.username WHERE city='$citySearchProduct'");
             $rowcount = $query->rowCount();
             if($rowcount){
                 $result = $query->fetchAll();

@@ -6,6 +6,8 @@ $users = new ManageUsers();
 $username = $_GET["username"];
 $password = $_GET["password"];
 $searchTerm = $_GET["searchTerm"];
+$citySearchProduct = $_GET["citySearchProduct"];
+
 
 session_start();
 header('Access-Control-Allow-Origin: *');
@@ -22,7 +24,7 @@ if($loginCheck == 1){
 	$_SESSION["username"] = $username;
 	$_SESSION["password"] = $password;
 	
-	$productList = $users->globalSearch($searchTerm);
+	$productList = $users->globalSearch($searchTerm,$citySearchProduct);
 	$data = (object) array('status' => 0,"data" => $productList);
 	echo json_encode($data);
 

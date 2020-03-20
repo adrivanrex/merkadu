@@ -13,13 +13,6 @@
     <link href="js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <title>Merkadu Online services</title>
-    <meta property="og:title" content="Merkadu Online services" />
-    <meta property="og:type" content="video.movie" />
-    <meta property="og:url" content="Online Public Market" />
-    <meta property="og:image" content="http://ia.media-imdb.com/images/rock.jpg" />
-    <meta property="og:description" content="Online Public Market" />
-
 </head>
 
 <body>
@@ -67,7 +60,7 @@
                     <li class="">
                         <a target="_blank" id="paymentCenter" href="#"><i class="fa fa-star"></i> <span class="nav-label">Delivery Team</span> <span class="label pull-right">NEW</span></a>
                     </li>
-                	-->
+                    -->
                 </ul>
             </div>
         </nav>
@@ -186,8 +179,6 @@
     <script>
     $(document).ready(function() {
         
-         // Click on the checkbox
-
         server = window.location.hostname;
         setInterval(function(){ getCartBuyNumber(server); }, 1000);
 
@@ -396,18 +387,16 @@
 
     });
 
-	user =  localStorage.getItem("username");
-	if(user){
+    user =  localStorage.getItem("username");
+    if(user){
 
-	}else{
-		document.location = 'login.html';
-	}
+    }else{
+        document.location = 'login.html';
+    }
 
     $(document).load(function () {
      // code here
 
-    document.getElementById("search").click(); 
-    document.getElementById("searchProduct").click(); 
     });
 
 
@@ -472,7 +461,7 @@
                 description = data.data[i].description;
                 owner = data.data[i].productOwner;
                 price = data.data[i].unitPrice;
-
+                
                 userinfo = localStorage.getItem("userinfo");
                 userinfo = JSON.parse(userinfo);
                 titleLink = 'view.php?id='+id+'';
