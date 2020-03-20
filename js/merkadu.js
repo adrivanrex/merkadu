@@ -8,6 +8,14 @@ $(document).ready(function () {
             SmoothlyMenu();
     });
 
+    $("#searchByStore").click(function(){
+        $('#iframeContent').attr('src', 'searchByStore.html');
+        $("body").toggleClass("mini-navbar");
+            SmoothlyMenu();
+    });
+
+
+
     $("#paymentCenter").click(function(){
         $('#iframeContent').attr('src', 'managePayments.html');
     });
