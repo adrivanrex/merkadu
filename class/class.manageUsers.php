@@ -46,6 +46,18 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
     }
 
+    function storeProducts($storeName,$storeUsername,$firstPage){
+        $lastPage = 10;
+        $query = $this->link->query("SELECT * FROM merkadu.products INNER JOIN mlm.userinfo ON merkadu.products.username=mlm.userinfo.username WHERE storeName='$storeName' AND productOwner='$storeUsername' ORDER BY date ASC LIMIT ".$firstPage.",".$lastPage."");
+            $rowcount = $query->rowCount();
+            if($rowcount){
+                $result = $query->fetchAll();
+                return $result;
+            }else{
+                return $rowcount;
+            }
+    }
+
     
     function reportProduct($username,$productID,$reportDescription){
         $datetime = date_create()->format('Y-m-d H:i:s');
@@ -456,9 +468,11 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
     }
 
-    function globalSearch($searchTerm,$citySearchProduct){
+    function globalSearch($searchTerm,$citySearchProduct,$startPage){
+        $lastPage = 10;
+
         if($searchTerm){
-            $query = $this->link->query("SELECT * FROM merkadu.products INNER JOIN mlm.userinfo ON merkadu.products.username=mlm.userinfo.username WHERE name='$searchTerm' AND city='$citySearchProduct'");
+            $query = $this->link->query("SELECT * FROM merkadu.products INNER JOIN mlm.userinfo ON merkadu.products.username=mlm.userinfo.username WHERE name='$searchTerm' AND city='$citySearchProduct' ORDER BY merkadu.products.date ASC LIMIT ".$startPage.",".$lastPage." ");
             $rowcount = $query->rowCount();
             if($rowcount){
                 $result = $query->fetchAll();
@@ -469,7 +483,7 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         }else{
             /** SELECT * FROM products ORDER BY RAND() **/
 
-            $query = $this->link->query("SELECT * FROM merkadu.products INNER JOIN mlm.userinfo ON merkadu.products.username=mlm.userinfo.username WHERE city='$citySearchProduct'");
+            $query = $this->link->query("SELECT * FROM merkadu.products INNER JOIN mlm.userinfo ON merkadu.products.username=mlm.userinfo.username WHERE city='$citySearchProduct'  ORDER BY merkadu.products.date ASC LIMIT ".$startPage.",".$lastPage."");
             $rowcount = $query->rowCount();
             if($rowcount){
                 $result = $query->fetchAll();
@@ -480,6 +494,32 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         }
 
     }
+
+    function storeSearch($searchTerm,$citySearchProduct){
+        if($searchTerm){
+            $query = $this->link->query("SELECT * FROM merkadu.store INNER JOIN mlm.userinfo ON merkadu.store.username=mlm.userinfo.username WHERE name='$searchTerm' AND city='$citySearchProduct'");
+            $rowcount = $query->rowCount();
+            if($rowcount){
+                $result = $query->fetchAll();
+                return $result;
+            }else{
+                return $rowcount;
+            }
+        }else{
+            /** SELECT * FROM products ORDER BY RAND() **/
+
+            $query = $this->link->query("SELECT * FROM merkadu.store INNER JOIN mlm.userinfo ON merkadu.store.username=mlm.userinfo.username WHERE city='$citySearchProduct'");
+            $rowcount = $query->rowCount();
+            if($rowcount){
+                $result = $query->fetchAll();
+                return $result;
+            }else{
+                return $rowcount;
+            }
+        }
+
+    }
+
 
     function addProduct($username,$productName,$productDescription,$productPrimaryPicture,$storeName,$unitPrice,$quantity){
         $datetime = date_create()->format('Y-m-d H:i:s');

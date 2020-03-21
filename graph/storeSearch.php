@@ -7,7 +7,6 @@ $username = $_GET["username"];
 $password = $_GET["password"];
 $searchTerm = $_GET["searchTerm"];
 $citySearchProduct = $_GET["citySearchProduct"];
-$startPage = $_GET["startPage"];
 
 
 session_start();
@@ -25,7 +24,7 @@ if($loginCheck == 1){
 	$_SESSION["username"] = $username;
 	$_SESSION["password"] = $password;
 	
-	$productList = $users->globalSearch($searchTerm,$citySearchProduct,$startPage);
+	$productList = $users->storeSearch($searchTerm,$citySearchProduct);
 	$data = (object) array('status' => 0,"data" => $productList);
 	echo json_encode($data);
 

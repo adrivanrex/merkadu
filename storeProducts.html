@@ -19,6 +19,7 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
+        <!--
         <div class="input-group form-inline">
             <div class="col-lg-4">
                 <select id="citySearchProduct" type="text" class="form-control input-lg">
@@ -36,6 +37,7 @@
                 </button>
             </div>
         </div>
+        -->
         <br>
         <center>
         <div class="btn-group">
@@ -46,6 +48,7 @@
 
         <div id="itemList" class="row">
         </div>
+
         <center>
         <div class="btn-group">
                                         <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
@@ -134,14 +137,10 @@
     };
 
 
-
-    /** paginate **/
-
     var startPage = 0;
-    $('.wrapper').on('click', '#forwardProductList', function() {
-        newPage = startPage++;
-        //alert(newPage);
 
+     $('.wrapper').on('click', '#forwardProductList', function() {
+        newPage = startPage++;
 
         $("#productOutput").empty();
         citySearchProduct = $("#citySearchProduct").val();
@@ -158,7 +157,13 @@
         //var server = "http://merkadu/";
         server = window.location.hostname;
 
-        url = '/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&citySearchProduct='+citySearchProduct+'&startPage='+newPage+'';
+        url_string = window. location. href //window.location.href
+        url = new URL(url_string);
+        storeID = url.searchParams.get("id");
+        storeName = url.searchParams.get("name");
+        storeUsername = url.searchParams.get("storeUsername");
+
+        url = '/graph/storeProducts.php?storeUsername=' + storeUsername + '&username='+username+'&password=' + password + '&name=' + storeName + '&firstPage='+newPage+'';
         console.log(url);
         searchHttp.open("GET", url);
 
@@ -207,9 +212,9 @@
 
     });
 
-    $('.wrapper').on('click', '#backwardProductList', function() {
+     $('.wrapper').on('click', '#backwardProductList', function() {
         newPage = startPage--;
-        
+
         $("#productOutput").empty();
         citySearchProduct = $("#citySearchProduct").val();
 
@@ -225,7 +230,13 @@
         //var server = "http://merkadu/";
         server = window.location.hostname;
 
-        url = '/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&citySearchProduct='+citySearchProduct+'&startPage='+newPage+'';
+        url_string = window. location. href //window.location.href
+        url = new URL(url_string);
+        storeID = url.searchParams.get("id");
+        storeName = url.searchParams.get("name");
+        storeUsername = url.searchParams.get("storeUsername");
+
+        url = '/graph/storeProducts.php?storeUsername=' + storeUsername + '&username='+username+'&password=' + password + '&name=' + storeName + '&firstPage='+newPage+'';
         console.log(url);
         searchHttp.open("GET", url);
 
@@ -270,6 +281,8 @@
 
             };
         };
+
+
     });
 
     Http = new XMLHttpRequest();
@@ -280,7 +293,14 @@
     var server = window.location.hostname;
     console.log(server);
 
-    url = '/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&startPage=0';
+    var url_string = window. location. href //window.location.href
+    url = new URL(url_string);
+    storeID = url.searchParams.get("id");
+    storeName = url.searchParams.get("name");
+    storeUsername = url.searchParams.get("storeUsername");
+
+
+    url = '/graph/storeProducts.php?username=' + username + '&password=' + password + '&name=' + storeName + '&storeUsername='+storeUsername+'&firstPage=0';
     console.log(url);
     Http.open("GET", url);
 
@@ -334,7 +354,13 @@
         //var server = "http://merkadu/";
         server = window.location.hostname;
 
-        url = '/graph/globalSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&citySearchProduct='+citySearchProduct+'&startPage=0';
+        url_string = window. location. href //window.location.href
+        url = new URL(url_string);
+        storeID = url.searchParams.get("id");
+        storeName = url.searchParams.get("name");
+        storeUsername = url.searchParams.get("storeUsername");
+
+        url = '/graph/storeProducts.php?storeUsername=' + storeUsername + '&username='+username+'&password=' + password + '&name=' + storeName + '&firstPage=0';
         console.log(url);
         searchHttp.open("GET", url);
 

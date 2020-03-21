@@ -5,10 +5,10 @@ $datetime = date_create()->format('Y-m-d H:i:s');
 $users = new ManageUsers();
 $username = $_GET["username"];
 $password = $_GET["password"];
-$searchTerm = $_GET["searchTerm"];
-$citySearchProduct = $_GET["citySearchProduct"];
-$startPage = $_GET["startPage"];
-
+$name = $_GET["name"];
+$username = $_GET["username"];
+$storeUsername= $_GET["storeUsername"];
+$firstPage = $_GET["firstPage"];
 
 session_start();
 header('Access-Control-Allow-Origin: *');
@@ -16,16 +16,12 @@ header('Access-Control-Allow-Credentials', 'Content-Type');
 header('Content-Type: application/json');
 
 $loginCheck = $users->LoginUser($username,$password);
-if($searchTerm == "null"){
-	$searchTerm = null;
-}
-
 if($loginCheck == 1){
 	
 	$_SESSION["username"] = $username;
 	$_SESSION["password"] = $password;
 	
-	$productList = $users->globalSearch($searchTerm,$citySearchProduct,$startPage);
+	$productList = $users->storeProducts($name,$storeUsername,$firstPage);
 	$data = (object) array('status' => 0,"data" => $productList);
 	echo json_encode($data);
 
