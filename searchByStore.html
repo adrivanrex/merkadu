@@ -37,8 +37,22 @@
             </div>
         </div>
         <br>
+        <center>
+        <div class="btn-group">
+                                        <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+                                        <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+                                    </div>
+        </center>
         <div id="itemList" class="row">
         </div>
+
+        <center>
+        <div class="btn-group">
+                                        <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+                                        <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+                                    </div>
+        </center>
+
         <div id="productOutput"></div>
         <div class="modal inmodal" id="reportModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
@@ -121,6 +135,148 @@
 
 
 
+
+    var startPage = 0;
+    $('.wrapper').on('click', '#backwardProductList', function() {
+        newPage = startPage--;
+        $("#productOutput").empty();
+        citySearchProduct = $("#citySearchProduct").val();
+
+        user = JSON.parse(localStorage.getItem("userinfo"));
+       
+
+        var username = localStorage.getItem("username");
+        var password = localStorage.getItem("password");
+        searchHttp = new XMLHttpRequest();
+        searchTerm = $("#searchTerm").val();
+
+        //var server = "http://hantakserver/";
+        //var server = "http://merkadu/";
+        server = window.location.hostname;
+
+        url = '/graph/storeSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&citySearchProduct='+citySearchProduct+'&firstPage='+newPage+'';
+        console.log(url);
+        searchHttp.open("GET", url);
+
+        searchHttp.send();
+
+        searchHttp.onreadystatechange = (e) => {
+
+            if (searchHttp.readyState == 4 && searchHttp.status == 200) {
+                console.log(JSON.parse(searchHttp.responseText));
+                data = JSON.parse(searchHttp.responseText);
+                //console.log(data);
+                console.log("Data numbers", data.data.length);
+                if(data.data.length == undefined){
+                    $("#productOutput").append('<center><p>No Product Yet. Create a store first and add your product</p> <button><a href="createStore.html">Create Store</a></button></center>');
+                }
+
+                $("#itemList").empty();
+                for (var i = data.data.length - 1; i >= 0; i--) {
+                    server = window.location.hostname;
+                    picture = '/img/house.png';
+                    
+                    console.log(data);
+                    name = data.data[i].name;
+                    id = data.data[i][0];
+                    console.log("idTest", id);
+                    description = data.data[i].description;
+                    price = data.data[i].unitPrice;
+                    userinfo = localStorage.getItem("userinfo");
+                    userinfo = JSON.parse(userinfo);
+                    owner = data.data[i].username;
+                    link = '/storeProducts.html?id=' + data.data[i][0] + '&name='+name+'&storeUsername='+owner+'';
+
+                    console.log("userinfos", userinfo.data.role);
+                    if (userinfo.data[0].role == "admin") {
+                        bannedUser = '<button id=' + id + ' type="submit" class="banProduct btn-primary btn-lg">BanProduct</button>';
+                    } else {
+                        bannedUser = '';
+                    }
+
+                    
+                    $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><a href="' + link + '"><h3><strong>' + name + '</strong></h3></a><p><i class="fa fa-map-marker"></i> ' + owner + '</p><address><strong>Description</strong><br>' + description + '</h3> </div><div class="clearfix"></div>');
+                }
+
+            };
+        };
+
+
+
+    });
+
+    $('.wrapper').on('click', '#forwardProductList', function() {
+        newPage = startPage++;
+
+
+        $("#productOutput").empty();
+        citySearchProduct = $("#citySearchProduct").val();
+
+        user = JSON.parse(localStorage.getItem("userinfo"));
+       
+
+        var username = localStorage.getItem("username");
+        var password = localStorage.getItem("password");
+        searchHttp = new XMLHttpRequest();
+        searchTerm = $("#searchTerm").val();
+
+        //var server = "http://hantakserver/";
+        //var server = "http://merkadu/";
+        server = window.location.hostname;
+
+        url = '/graph/storeSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&citySearchProduct='+citySearchProduct+'&firstPage='+newPage+'';
+        console.log(url);
+        searchHttp.open("GET", url);
+
+        searchHttp.send();
+
+        searchHttp.onreadystatechange = (e) => {
+
+            if (searchHttp.readyState == 4 && searchHttp.status == 200) {
+                console.log(JSON.parse(searchHttp.responseText));
+                data = JSON.parse(searchHttp.responseText);
+                //console.log(data);
+                console.log("Data numbers", data.data.length);
+                if(data.data.length == undefined){
+                    $("#productOutput").append('<center><p>No Product Yet. Create a store first and add your product</p> <button><a href="createStore.html">Create Store</a></button></center>');
+                }
+
+                $("#itemList").empty();
+                for (var i = data.data.length - 1; i >= 0; i--) {
+                    server = window.location.hostname;
+                    picture = '/img/house.png';
+                    
+                    console.log(data);
+                    name = data.data[i].name;
+                    id = data.data[i][0];
+                    console.log("idTest", id);
+                    description = data.data[i].description;
+                    price = data.data[i].unitPrice;
+                    userinfo = localStorage.getItem("userinfo");
+                    userinfo = JSON.parse(userinfo);
+                    owner = data.data[i].username;
+                    link = '/storeProducts.html?id=' + data.data[i][0] + '&name='+name+'&storeUsername='+owner+'';
+
+                    console.log("userinfos", userinfo.data.role);
+                    if (userinfo.data[0].role == "admin") {
+                        bannedUser = '<button id=' + id + ' type="submit" class="banProduct btn-primary btn-lg">BanProduct</button>';
+                    } else {
+                        bannedUser = '';
+                    }
+
+                    
+                    $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><a href="' + link + '"><h3><strong>' + name + '</strong></h3></a><p><i class="fa fa-map-marker"></i> ' + owner + '</p><address><strong>Description</strong><br>' + description + '</h3> </div><div class="clearfix"></div>');
+                }
+
+            };
+        };
+
+
+
+    });
+
+
+
     Http = new XMLHttpRequest();
     searchTerm = null;
 
@@ -129,7 +285,8 @@
     var server = window.location.hostname;
     console.log(server);
 
-    url = '/graph/storeSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '';
+    citySearchProduct = $("#citySearchProduct").val();
+    url = '/graph/storeSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&citySearchProduct='+citySearchProduct+'&firstPage=0';
     console.log(url);
     Http.open("GET", url);
 
@@ -183,7 +340,7 @@
         //var server = "http://merkadu/";
         server = window.location.hostname;
 
-        url = '/graph/storeSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&citySearchProduct='+citySearchProduct+'';
+        url = '/graph/storeSearch.php?username=' + username + '&password=' + password + '&searchTerm=' + searchTerm + '&citySearchProduct='+citySearchProduct+'&firstPage=0';
         console.log(url);
         searchHttp.open("GET", url);
 

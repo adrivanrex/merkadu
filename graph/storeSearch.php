@@ -7,7 +7,7 @@ $username = $_GET["username"];
 $password = $_GET["password"];
 $searchTerm = $_GET["searchTerm"];
 $citySearchProduct = $_GET["citySearchProduct"];
-
+$firstPage = $_GET["firstPage"];
 
 session_start();
 header('Access-Control-Allow-Origin: *');
@@ -24,7 +24,7 @@ if($loginCheck == 1){
 	$_SESSION["username"] = $username;
 	$_SESSION["password"] = $password;
 	
-	$productList = $users->storeSearch($searchTerm,$citySearchProduct);
+	$productList = $users->storeSearch($searchTerm,$citySearchProduct,$firstPage);
 	$data = (object) array('status' => 0,"data" => $productList);
 	echo json_encode($data);
 

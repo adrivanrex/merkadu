@@ -495,9 +495,10 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
     }
 
-    function storeSearch($searchTerm,$citySearchProduct){
+    function storeSearch($searchTerm,$citySearchProduct,$firstPage){
         if($searchTerm){
-            $query = $this->link->query("SELECT * FROM merkadu.store INNER JOIN mlm.userinfo ON merkadu.store.username=mlm.userinfo.username WHERE name='$searchTerm' AND city='$citySearchProduct'");
+            $lastPage = 10;
+            $query = $this->link->query("SELECT * FROM merkadu.store INNER JOIN mlm.userinfo ON merkadu.store.username=mlm.userinfo.username WHERE name='$searchTerm' AND city='$citySearchProduct' ORDER BY date ASC LIMIT ".$firstPage.",".$lastPage."");
             $rowcount = $query->rowCount();
             if($rowcount){
                 $result = $query->fetchAll();
