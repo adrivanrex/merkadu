@@ -28,8 +28,6 @@ $(document).ready(function () {
     setInterval(function(){  
         test = Http = new XMLHttpRequest();
         server = window.location.hostname;
-
-
         url = '/graph/storelist.php?username='+username+'&password='+password+'';
         test.open("GET", url);
         //console.log(url);
@@ -211,6 +209,7 @@ $('.wrapper').on('click', '.editProduct', function() {
             data = JSON.parse(Http.responseText);
             if(data.status == 1){
                 $("#createStoreCancel").click();
+                document.location = "addProducts.html";
             }else{
                 alert(data.message);
             }

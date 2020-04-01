@@ -95,7 +95,33 @@
     <script src="js/bootstrap.min.js"></script>
     
     <!-- Custom and plugin javascript -->
-    <script src="js/merkadu.js"></script>
+    <script>
+        document.getElementById("updatePassword").addEventListener("click", updatePassword);
+
+        function updatePassword(){
+            
+            lastPassword = document.getElementById("lastPassword").value;
+            newPassword = document.getElementById("newPassword").value;
+            verifyNewPassword = document.getElementById("verifyNewPassword").value;
+            username = localStorage.getItem("username");
+            Http = new XMLHttpRequest();
+
+            url = 'graph/updatePassword.php?username='+username+'&password=' + lastPassword + '&newPassword=' + newPassword + '&verifyNewPassword='+verifyNewPassword+'';
+            console.log(url);
+            Http.open("GET", url);
+
+            Http.send();
+
+            Http.onreadystatechange = (e) => {
+
+                if (Http.readyState == 4 && Http.status == 200) {
+                    console.log(JSON.parse(Http.responseText));
+                    data = JSON.parse(Http.responseText);
+                    alert(data.message);
+                };
+            };
+        }
+    </script>
     
 </body>
 </html>

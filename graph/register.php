@@ -20,6 +20,15 @@ $upline = $_GET['upline'];
 $placement = $_GET['placement'];
 $registrationCode = $_GET['registrationCode'];
 **/
+function antiXss($string){
+	$string = str_replace("<","",$string);
+	$string = str_replace(">","",$string);
+	$string = str_replace("&lt;","",$string);
+	$string = str_replace("&gt;","",$string);
+	return $string;
+}
+
+$username = antiXss($username);
 
 $paypal = "none";
 $dateTime = date("H:i:s");

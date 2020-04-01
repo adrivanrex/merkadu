@@ -29,9 +29,10 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
                     $accountLock = false;
 
                     $status = "Open";
-
-                     $query = $this->link->prepare("INSERT INTO mlm.userinfo (username,firstName,middleName,lastName,mobileNumber,email,reg_time,streetAddress,secondAddress,postalCode,city,role,accountLock,lockedTime,unlockTime,bdayYear,bdayMonth,bdayDay,gender,status,country,continent,currency,state) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                    $values = array($username,$firstName,$middleName,$lastName,$mobileNumber,$email,$reg_time,$streetAddress,$secondAddress,$postalCode,$city,$role,$accountLock,$lockedTime,$unlockTime,$bdayYear,$bdayMonth,$bdayDay,$gender,$status,$country,$continent,$currency,$state);
+                    $verified = "false";
+                    
+                     $query = $this->link->prepare("INSERT INTO mlm.userinfo (username,firstName,middleName,lastName,mobileNumber,email,reg_time,streetAddress,secondAddress,postalCode,city,role,accountLock,lockedTime,unlockTime,bdayYear,bdayMonth,bdayDay,gender,status,country,continent,currency,state,verified) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    $values = array($username,$firstName,$middleName,$lastName,$mobileNumber,$email,$reg_time,$streetAddress,$secondAddress,$postalCode,$city,$role,$accountLock,$lockedTime,$unlockTime,$bdayYear,$bdayMonth,$bdayDay,$gender,$status,$country,$continent,$currency,$state,$verified);
                     $query->execute($values);
 
         $balance = 100000;
@@ -42,7 +43,20 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         $query->execute($values);
         $counts = $query->rowCount();
 
-        return $counts;;
+        /** verification **/
+
+        
+
+
+        return $counts;
+
+    }
+
+    function updatePassword($username,$password,$newPassword){
+        $datetime = date_create()->format('Y-m-d H:i:s');
+        $query = $this->link->query("UPDATE mlm.users SET password ='$newPassword' WHERE username='$username'");
+        $rowcount = $query->rowCount();
+        return $rowcount;
 
     }
 
@@ -58,7 +72,15 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
             }
     }
 
-    
+    function verifyProfile($username,$picture){
+    	$datetime = date_create()->format('Y-m-d H:i:s');
+        $query = $this->link->prepare("INSERT INTO mlm.verifyProfile (username,picture,date) VALUES (?,?,?)");
+        $values = array($username,$picture,$datetime);
+        $query->execute($values);
+        $counts = $query->rowCount();
+        return $counts;
+    }
+
     function reportProduct($username,$productID,$reportDescription){
         $datetime = date_create()->format('Y-m-d H:i:s');
         $query = $this->link->prepare("INSERT INTO mlm.report (username,productID,reportDescription,date) VALUES (?,?,?,?)");

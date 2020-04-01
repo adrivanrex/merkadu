@@ -9,8 +9,20 @@ if (!empty($_FILES)) {
     $date = new DateTime();
     $newFileName = $date->getTimestamp().$_FILES['file']['name'];
     $targetFile =  $targetPath.$newFileName;  // Create the absolute path of the uploaded file destination.
-    move_uploaded_file($tempFile,$targetFile); // Move uploaded file to destination.
 
+    $ext = pathinfo($targetFile, PATHINFO_EXTENSION);
+
+	if ($ext=="jpg" OR $ext=="jpeg" OR $ext=="gif" OR $ext=="png") {
+	    // your code here like...
+	    move_uploaded_file($tempFile,$targetFile); // Move uploaded file to destination.
+
+	    //echo "Upload successful";
+	}else{
+	    // your invalid code here like...
+	    echo "Invalid image format. Only upload JPG or JPEG or GIF or PNG";
+	}
+
+    
     echo $newFileName;
 }
 ?>

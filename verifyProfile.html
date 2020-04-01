@@ -1,0 +1,208 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>merkadu | Dashboard</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- Morris -->
+    <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <!-- Gritter -->
+    <link href="js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color:white">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>User
+                            <small>Verfication</small>
+                        </h5>
+                        <div ibox-tools></div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <h1> Upload your I.D by clicking arrow below</h1>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12 b-r">
+                                <form action="upload.php" class="dropzone" id="dropzonewidget">
+                                    <div class="dropzone-previews"></div>
+                                </form>
+                                <button type="button" class="uploadVerification btn btn-primary">Submit</button>
+                            </div>
+                            <!--
+                    <div class="col-sm-6"><h4>Not a member?</h4>
+
+                        <p>You can create an account:</p>
+
+                        <p class="text-center">
+                            <a href=""><i class="fa fa-sign-in big-icon"></i></a>
+                        </p>
+                    </div>
+                    -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--
+    <div class="col-lg-5">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Horizontal form</h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+                <form class="form-horizontal">
+                    <p>Sign in today for more expirience.</p>
+
+                    <div class="form-group"><label class="col-lg-2 control-label">Email</label>
+
+                        <div class="col-lg-10"><input type="email" placeholder="Email" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="col-lg-2 control-label">Password</label>
+
+                        <div class="col-lg-10"><input type="password" placeholder="Password" class="form-control"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <div class="checkbox"> <input icheck type="checkbox" ng-model="main.checkOne"><i></i> Remember me </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <button class="btn btn-sm btn-white" type="submit">Sign in</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    -->
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/dropzone/dropzone.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script>
+    username = localStorage.getItem("username");
+    password = localStorage.getItem("password");
+    $(document).ready(function() {
+        $('#loading-example-btn').click(function() {
+            btn = $(this);
+            simpleLoad(btn, true)
+
+            // Ajax example
+            //                $.ajax().always(function () {
+            //                    simpleLoad($(this), false)
+            //                });
+
+            simpleLoad(btn, false)
+        });
+    });
+
+    function simpleLoad(btn, state) {
+        if (state) {
+            btn.children().addClass('fa-spin');
+            btn.contents().last().replaceWith(" Loading");
+        } else {
+            setTimeout(function() {
+                btn.children().removeClass('fa-spin');
+                btn.contents().last().replaceWith(" Refresh");
+            }, 2000);
+        }
+    }
+
+
+
+    //console.log(Dropzone);
+    //Dropzone.autoDiscover = false;
+    var fileList = new Array;
+    var i = 0;
+
+    Dropzone.options.dropzonewidget = {
+        init: function() {
+
+            this.on("success", function(file, serverFileName) {
+                fileList[i] = { "serverFileName": serverFileName, "fileName": file.name, "fileId": i };
+                console.log(fileList[0]);
+
+
+
+                $(".uploadVerification").click(function() {
+                    
+                    $(".dz-default").removeClass(".dz-message")
+                    message = $(".dz-success").val();
+                    $(".dz-message").empty();
+                    console.log("message", message);
+
+
+                    if (message == undefined) {
+                        alert("please add image");
+                    }
+
+                    editProduct = new XMLHttpRequest();
+                    server = window.location.hostname;
+
+                    picture = fileList[0]["serverFileName"];
+
+                    url = '/graph/verifyProfile.php?username=' + username + '&password=' + password + '&picture=' + picture + '';
+                    console.log(url);
+                    editProduct.open("GET", url);
+                    //console.log(url);
+                    editProduct.send();
+
+                    editProduct.onreadystatechange = (e) => {
+                        if (editProduct.readyState == 4 && editProduct.status == 200) {
+                            data = JSON.parse(editProduct.responseText);
+                            console.log(editProduct.responseText);
+                            if(data.verifyProfile = 1){
+                                alert("Success wait for verification");
+                            }
+
+
+                        };
+                    }
+                });
+
+                i++;
+
+            });
+            this.on("removedfile", function(file) {
+                var rmvFile = "";
+                for (f = 0; f < fileList.length; f++) {
+
+                    if (fileList[f].fileName == file.name) {
+                        rmvFile = fileList[f].serverFileName;
+
+                    }
+
+                }
+
+                if (rmvFile) {
+                    $.ajax({
+                        url: "/delete_temp_files.php",
+                        type: "POST",
+                        data: { "fileList": rmvFile }
+                    });
+                }
+            });
+
+        },
+        url: "/upload.php",
+    };
+    </script>
+</body>
+
+</html>

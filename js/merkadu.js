@@ -19,6 +19,14 @@ $(document).ready(function () {
     $("#paymentCenter").click(function(){
         $('#iframeContent').attr('src', 'managePayments.html');
     });
+
+
+    $("#verify").click(function(){
+        $('#iframeContent').attr('src', 'verifyProfile.html');
+    });
+    
+
+
     $("#purchased").click(function(){
          $('#iframeContent').attr('src', 'purchased.html');
     });

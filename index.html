@@ -28,22 +28,20 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
-                        <div class="dropdown profile-element"> 
-                            <span>
-                                <img alt="image" width="50px" height="50px" class="img-circle" src="img/def_face.jpg" />
-                            </span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="clear"> <span class="block m-t-xs"> 
-                                    </span> <strong id="fullName" class="font-bold"></strong><b class="caret"></b></span> </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        
+                        <div class="">
+                            <div class="dropdown"> 
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#"><img  class="img-circle" alt="image" width="50px" height="50px" src="img/def_face.jpg" /><br><b class="caret"></b></a>
+                            <ul class="dropdown-menu animated fadeInRight">
                                 <li><a id="profile" href="#">Profile</a></li>
+                                <li><a id="verify" href="#">verification</a></li>
                                 <li class="divider"></li>
                                 <li><a href="logout.php">Logout</a></li>
                             </ul>
                         </div>
-                        <div class="logo-element">
-                            M+
                         </div>
+
+
                     </li>
                     <li class="active">
                         <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
@@ -92,11 +90,11 @@
                                 <i class="fa fa-shopping-cart"></i> <span id="cartBuy" class="label label-warning"></span>
                             </a>
                         </li>
-                        <!--
+                        
                         <li>
                             <a href="http://merkadu-support.tk"><i class="fa fa-question-circle fa-6"></i></a>
                         </li>
-                        -->
+                        
                         <li>
                             <a href="logout.php">
                                 <i class="fa fa-sign-out"></i> Log out
@@ -192,7 +190,7 @@
 
         server = window.location.hostname;
         setInterval(function(){ getCartBuyNumber(server); }, 1000);
-
+        $("#fullName").append(username);
 
         
         function getCartBuyNumber(server) {
@@ -200,7 +198,7 @@
             //var server = "http://hantakserver/";
             server = window.location.hostname;
             //var server = "http://merkadu/";
-
+            
             url = '/graph/cartList.php?username=' + username + '&password=' + password + '';
             //console.log(url);
             Http.open("GET", url);

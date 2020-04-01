@@ -33,12 +33,29 @@
                             </div>
                             -->
                     </div>
+
+                    <div class="btn-group">
+                                        <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+                                        <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+                                    </div>
+        </center>
+
+
                     <div class="project-list">
                         <table class="table table-hover">
+                            <div id="incomingOrderCheck"></div>
                             <tbody id="incomingOrderList">
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="btn-group">
+                                        <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+                                        <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+                                    </div>
+        </center>
+
+        
                 </div>
             </div>
         </div>
@@ -100,7 +117,15 @@
             
             $("#incomingOrderList").empty();
             if (incomingOrderList.readyState == 4 && incomingOrderList.status == 200) {
-                data = JSON.parse(incomingOrderList.responseText);
+            data = JSON.parse(incomingOrderList.responseText);
+            console.log(
+                "incoming", data);
+            if(data.data == 0){
+                $("#incomingOrderCheck").empty();
+                $("#incomingOrderCheck").append('<center><p>No incoming orders yet</p></center>');
+            }
+
+
             fullName = '' + data.user[0]["firstName"] + ' ' + data.user[0]["lastName"] + '';
             console.log(data.user);
             address = '' + data.user[0]["streetAddress"] + ' ' + data.user[0]["secondAddress"] + ' ' + data.user[0]["state"] + ' ' + data.user[0]["city"] + '';
@@ -125,6 +150,17 @@
                     buyerInfoCity = data.data[i]["buyerInfo"][0]["city"];
                     buyerAddress = '' + buyerStreetAddress + ' ' + buyerSecondAddress + ' ' + buyerInfoCity + '';
                     purchasedID = data.data[i]["purchasedID"];
+                    buyerVerification = data.data[i]["buyerInfo"][0]["verified"];
+                    
+                    console.log("buyer info", buyerInfo);
+                    if(buyerVerification == true){
+                        verification = '<div class="alert alert-success" role="alert"><i class="fas fa-shield-alt"></i> Verified</div>'
+
+                    }else{
+                        
+                        verification = '<div class="alert alert-danger" role="alert">UnVerified</div>'
+                    }
+
                     status = data.data[i]["status"];
                     if(status == "on-delivery"){
                         deliveryMessage = "delivering";
@@ -144,7 +180,7 @@
                         deliverProduct = "ab";
                     }
 
-                    $("#incomingOrderList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#">' + productName + '</a><br/><small>Product ID: ' + id + '</small><br><small>Created ' + date + '</small></td><td class="project-completion"><small>To:' + buyerFullName + '</small><br><small>Address:' + buyerAddress + '</small><br><small>Quantity:' + quantity + '</small><br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"><h2>ID:'+purchasedID+' </h2> <strong></strong><a id="' + purchasedID + '"href="#" class="'+deliverProduct+' btn btn-white btn-sm"><i class="fa '+deliveryIcon+'"></i> '+deliveryMessage+' </a></td></tr>');
+                    $("#incomingOrderList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#">' + productName + '</a><br/><small>Product ID: ' + id + '</small><br><small>Created ' + date + '</small></td><td>'+verification+'<td class="project-completion"><small>To:' + buyerFullName + '</small><br><small>Address:' + buyerAddress + '</small><br><small>Quantity:' + quantity + '</small><br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"><h2>ID:'+purchasedID+' </h2> <strong></strong><a id="' + purchasedID + '"href="#" class="'+deliverProduct+' btn btn-white btn-sm"><i class="fa '+deliveryIcon+'"></i> '+deliveryMessage+' </a></td></tr>');
 
                 }
             };
