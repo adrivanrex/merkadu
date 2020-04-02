@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>merkadu | Products</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color: white">
+    <div class="row border-bottom">
+        <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInUp">
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <!--
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                        </div>
+                        -->
+                        <div class="col-md-11">
+                            <!--
+                            <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+                            </div>
+                            -->
+                    </div>
+
+                    <div class="btn-group">
+                                        <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+                                        <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+                                    </div>
+        </center>
+
+
+                    <div class="project-list">
+                        <table class="table table-hover">
+                            <div id="photoVerificationListCheck"></div>
+                            <tbody id="photoVerificationList">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="btn-group">
+                                        <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+                                        <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+                                    </div>
+        </center>
+
+        
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    <script>
+    $(document).ready(function() {
+
+        $('#loading-example-btn').click(function() {
+            btn = $(this);
+            simpleLoad(btn, true)
+
+            // Ajax example
+            //                $.ajax().always(function () {
+            //                    simpleLoad($(this), false)
+            //                });
+
+            simpleLoad(btn, false)
+        });
+    });
+
+    function simpleLoad(btn, state) {
+        if (state) {
+            btn.children().addClass('fa-spin');
+            btn.contents().last().replaceWith(" Loading");
+        } else {
+            setTimeout(function() {
+                btn.children().removeClass('fa-spin');
+                btn.contents().last().replaceWith(" Refresh");
+            }, 2000);
+        }
+    }
+
+    getphotoVerificationList();
+
+    //setInterval(function(){ getphotoVerificationList(); }, 10000);
+
+    
+
+    function getphotoVerificationList() {
+        photoVerificationList = new XMLHttpRequest();
+        var server = "http://merkadu.tk/";
+        url = '/graph/manageIdVerification.php?username=' + username + '&password=' + password + '';
+        console.log(url);
+        photoVerificationList.open("GET", url);
+
+        photoVerificationList.send();
+
+
+
+        photoVerificationList.onreadystatechange = (e) => {
+            
+            $("#photoVerificationList").empty();
+            if (photoVerificationList.readyState == 4 && photoVerificationList.status == 200) {
+            data = JSON.parse(photoVerificationList.responseText);
+            console.log(
+                "photoVerificationList", data);
+            if(data.data == 0){
+                $("#photoVerificationListCheck").empty();
+                $("#photoVerificationListCheck").append('<center><p>No photo to verify yet</p></center>');
+            }
+
+                    for (var i = data.length - 1; i >= 0; i--) {
+                        username = data[i]["username"];
+                        picture = data[i]["picture"];
+                        fullName = ''+data[i]["firstName"]+' '+data[i]["middleName"]+' '+data[i]["lastName"]+'';
+                        id = data[i]["id"];
+                        date = data[i]["date"];
+                        streetAddress = ''+data[i]["streetAddress"]+'';
+                        secondAddress = ''+data[i]["secondAddress"]+'';
+                        state = ''+data[i]["state"]+'';
+                        city = ''+data[i]["city"]+'';
+
+
+                         $("#photoVerificationList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#">' + fullName + '</a><br/><small>'+streetAddress+' '+secondAddress+' '+city+' '+state+' </small><br><small>Created ' + date + '</small></td><td><td class="project-completion"><img src="uploads/'+picture+'"><img><br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"> <strong></strong><a id="' + username + '"href="#" class="acceptProfile btn btn-white btn-sm"><i class="fa pencil"></i> Accept </a><a id="' + username + '"href="#" class="declineProfile btn btn-white btn-sm"><i class="fa pencil"></i> Decline </a></td></tr>');
+                    }
+                   
+
+                }
+            };
+        }
+
+        $('.wrapper').on('click', '.acceptProfile', function() {
+            //alert(this.id);
+            profileToVerify = this.id;
+            
+            acceptProfileVerification = new XMLHttpRequest();
+            var server = "http://merkadu.tk/";
+            url = '/graph/acceptProfileVerification.php?username=' + username + '&password=' + password + '&profileToVerify='+profileToVerify+'';
+            console.log(url);
+            acceptProfileVerification.open("GET", url);
+
+            acceptProfileVerification.send();
+
+
+
+            acceptProfileVerification.onreadystatechange = (e) => {
+                data = JSON.parse(acceptProfileVerification.responseText);
+                
+                if (acceptProfileVerification.readyState == 4 && acceptProfileVerification.status == 200) {
+                    console.log(data);
+                    alert(data.message);
+                }
+            };
+
+        });
+
+        $('.wrapper').on('click', '.declineProfile', function() {
+            //alert(this.id);
+            profileToVerify = this.id;
+            
+            declineProfileVerification = new XMLHttpRequest();
+            var server = "http://merkadu.tk/";
+            url = '/graph/declineProfileVerification.php?username=' + username + '&password=' + password + '&profileToVerify='+profileToVerify+'';
+            console.log(url);
+            declineProfileVerification.open("GET", url);
+
+            declineProfileVerification.send();
+
+
+
+            declineProfileVerification.onreadystatechange = (e) => {
+                data = JSON.parse(declineProfileVerification.responseText);
+                
+                if (declineProfileVerification.readyState == 4 && declineProfileVerification.status == 200) {
+                    console.log(data);
+                    alert(data.message);
+                }
+            };
+
+        });
+
+    
+    </script>
+</body>
+
+</html>

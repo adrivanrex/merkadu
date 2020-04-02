@@ -17,12 +17,13 @@ if (!empty($_FILES)) {
 	    move_uploaded_file($tempFile,$targetFile); // Move uploaded file to destination.
 
 	    //echo "Upload successful";
+	echo $newFileName;
 	}else{
 	    // your invalid code here like...
 	    echo "Invalid image format. Only upload JPG or JPEG or GIF or PNG";
 	}
 
     
-    echo $newFileName;
+    
 }
 ?>

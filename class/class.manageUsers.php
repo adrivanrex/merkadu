@@ -60,6 +60,30 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
     }
 
+    function roleCheck($username){
+        $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE username='$username'");
+       
+        $rowCount = $query->rowCount();
+        if($rowCount == 1){
+            $result = $query->fetchAll();
+            return $result;
+        }else{
+            return $rowCount;
+        }
+    }
+    
+    function verifyID(){
+        $query = $this->link->query("SELECT * FROM mlm.verifyprofile INNER JOIN mlm.userinfo ON mlm.verifyprofile.username=mlm.userinfo.username");
+       
+        $rowCount = $query->rowCount();
+        if($rowCount > 0){
+            $result = $query->fetchAll();
+            return $result;
+        }else{
+            return $rowCount;
+        }
+    }
+
     function storeProducts($storeName,$storeUsername,$firstPage){
         $lastPage = 10;
         $query = $this->link->query("SELECT * FROM merkadu.products INNER JOIN mlm.userinfo ON merkadu.products.username=mlm.userinfo.username WHERE storeName='$storeName' AND productOwner='$storeUsername' ORDER BY date ASC LIMIT ".$firstPage.",".$lastPage."");
@@ -74,11 +98,42 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
     function verifyProfile($username,$picture){
     	$datetime = date_create()->format('Y-m-d H:i:s');
-        $query = $this->link->prepare("INSERT INTO mlm.verifyProfile (username,picture,date) VALUES (?,?,?)");
-        $values = array($username,$picture,$datetime);
-        $query->execute($values);
-        $counts = $query->rowCount();
-        return $counts;
+        if($picture == 'Invalid image format. Only upload JPG or JPEG or GIF or PNG'){
+            return 0;
+        }else{
+        $query = $this->link->query("SELECT * FROM mlm.verifyProfile WHERE username='$username'");
+       
+        $rowCount = $query->rowCount();
+        if($rowCount == 0){
+            $query = $this->link->prepare("INSERT INTO mlm.verifyProfile (username,picture,date) VALUES (?,?,?)");
+            $values = array($username,$picture,$datetime);
+            $query->execute($values);
+            $counts = $query->rowCount();
+            return $counts;
+        }
+
+        if($rowCount == 1){
+            $query = $this->link->query("UPDATE mlm.verifyProfile SET picture ='$picture' WHERE username='$username'");
+            $rowcount = $query->rowCount();
+        }
+        
+        }
+    }
+
+    function acceptProfileVerification($username){
+        $query = $this->link->query("DELETE FROM mlm.verifyprofile WHERE username = '$username'");
+        $rowcount = $query->rowCount();
+        $verified = "verified";
+
+        $query = $this->link->query("UPDATE mlm.userinfo SET verified ='$verified' WHERE username='$username'");
+        $rowcount = $query->rowCount();
+        return 1;
+    }
+
+    function declineProfileVerification($username){
+        $query = $this->link->query("DELETE FROM mlm.verifyprofile WHERE username = '$username'");
+        $rowcount = $query->rowCount();
+        return 1;
     }
 
     function reportProduct($username,$productID,$reportDescription){
