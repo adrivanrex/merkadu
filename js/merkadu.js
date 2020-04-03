@@ -14,6 +14,12 @@ $(document).ready(function () {
             SmoothlyMenu();
     });
 
+     $("#billing").click(function(){
+        $('#iframeContent').attr('src', 'billing.html');
+        $("body").toggleClass("mini-navbar");
+            SmoothlyMenu();
+    });
+
 
 
     $("#paymentCenter").click(function(){

@@ -36,14 +36,16 @@
                 </button>
             </div>
         </div>
-        <br>
+        <div class="row">
+            <br>
         <center>
         <div class="btn-group">
                                         <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
                                         <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
                                     </div>
         </center>
-
+        <br>
+        </div>
         <div id="itemList" class="row">
         </div>
         <center>
@@ -190,6 +192,7 @@
                     userinfo = JSON.parse(userinfo);
                     owner = data.data[i].username;
 
+                    storeName = data.data[i].storeName;
                     console.log("userinfos", userinfo.data.role);
                     if (userinfo.data[0].role == "admin") {
                         bannedUser = '<button id=' + id + ' type="submit" class="banProduct btn-primary btn-lg">BanProduct</button>';
@@ -198,7 +201,7 @@
                     }
 
 
-                    $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> ' + owner + '</p><address><strong>Description</strong><br>' + description + '<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:</strong>' + price + '</h3></div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button>--> ' + bannedUser + '</div>');
+                    $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> ' + storeName + '</p><address><strong>Description</strong><br>' + description + '<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:</strong>' + price + '</h3></div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button>--> ' + bannedUser + '</div>');
                 }
 
             };
@@ -253,6 +256,7 @@
                     console.log("idTest", id);
                     description = data.data[i].description;
                     price = data.data[i].unitPrice;
+                    storeName = data.data[i].storeName;
                     userinfo = localStorage.getItem("userinfo");
                     userinfo = JSON.parse(userinfo);
                     owner = data.data[i].username;
@@ -265,7 +269,7 @@
                     }
 
 
-                    $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> ' + owner + '</p><address><strong>Description</strong><br>' + description + '<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:</strong>' + price + '</h3></div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button>--> ' + bannedUser + '</div>');
+                    $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> ' + storeName + '</p><address><strong>Description</strong><br>' + description + '<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:</strong>' + price + '</h3></div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button>--> ' + bannedUser + '</div>');
                 }
 
             };
@@ -305,6 +309,7 @@
                 userinfo = localStorage.getItem("userinfo");
                 userinfo = JSON.parse(userinfo);
                 titleLink = 'view.php?id=' + id + '';
+                storeName = data.data[i].storeName;
                 console.log("userinfos", userinfo.data[0].role);
                 if (userinfo.data[0].role == "admin") {
                     bannedUser = '<button id=' + id + ' type="submit"  class="banProduct btn-primary btn-lg">BanProduct</button>';
@@ -312,7 +317,7 @@
                     bannedUser = '';
                 }
 
-                $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><a href="' + titleLink + '"><h3><strong>' + name + '</strong></h3></a><p><i class="fa fa-map-marker"></i> ' + owner + '</p><address><strong>Description</strong><br>' + description + '<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:' + price + '</strong></h3> </div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit"  class="banProduct btn-primary btn-lg">Report</button>-->' + bannedUser + '</div>');
+                $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><a href="' + titleLink + '"><h3><strong>' + name + '</strong></h3></a><p><i class="fa fa-map-marker"></i> ' + storeName + '</p><address><strong>Description</strong><br>' + description + '<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:' + price + '</strong></h3> </div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit"  class="banProduct btn-primary btn-lg">Report</button>-->' + bannedUser + '</div>');
             }
 
         };
@@ -365,7 +370,7 @@
                     userinfo = localStorage.getItem("userinfo");
                     userinfo = JSON.parse(userinfo);
                     owner = data.data[i].username;
-
+                    storeName = data.data[i].storeName;
                     console.log("userinfos", userinfo.data.role);
                     if (userinfo.data[0].role == "admin") {
                         bannedUser = '<button id=' + id + ' type="submit" class="banProduct btn-primary btn-lg">BanProduct</button>';
@@ -374,7 +379,7 @@
                     }
 
 
-                    $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> ' + owner + '</p><address><strong>Description</strong><br>' + description + '<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:</strong>' + price + '</h3></div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button>--> ' + bannedUser + '</div>');
+                    $("#itemList").append('<div class="col-lg-4"><div class="contact-box"><div class="col-sm-4"><div class="text-center"><img alt="image"  class="m-t-xs img-responsive" src="' + picture + '"><br><br> </div></div><div class="col-sm-8"><h3><strong>' + name + '</strong></h3><p><i class="fa fa-map-marker"></i> ' + storeName + '</p><address><strong>Description</strong><br>' + description + '<form"><input class="form-control" id="' + id + 'Quantiy" type="number" min="0" placeholder="quantity"></input></form ><h3><strong>Price:</strong>' + price + '</h3></div><div class="clearfix"><button id=' + id + ' type="submit" class="buy btn-primary btn-lg">Buy</button><!--<button id=' + id + ' type="submit" data-toggle="modal" data-target="#reportModal" class="report btn-primary btn-lg">Report</button>--> ' + bannedUser + '</div>');
                 }
 
             };

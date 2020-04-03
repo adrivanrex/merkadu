@@ -35,8 +35,8 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
                     $values = array($username,$firstName,$middleName,$lastName,$mobileNumber,$email,$reg_time,$streetAddress,$secondAddress,$postalCode,$city,$role,$accountLock,$lockedTime,$unlockTime,$bdayYear,$bdayMonth,$bdayDay,$gender,$status,$country,$continent,$currency,$state,$verified);
                     $query->execute($values);
 
-        $balance = 100000;
-        $availableBalance = 10000;
+        $balance = 10000000;
+        $availableBalance = 10000000;
         $totalEncash = 0;
         $query = $this->link->prepare("INSERT INTO mlm.balance (username,balance,availableBalance,totalEncash) VALUES (?,?,?,?)");
         $values = array($username,$balance,$availableBalance,$totalEncash);
@@ -293,6 +293,40 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
     }
 
+    function Billing($username,$month,$year){
+        $startDate = strtotime("1-$month-$year");
+        $endDate = strtotime("+1 month", $startDate);
+        $startDate = gmdate("Y-m-d\TH:i:s\Z", $startDate);
+        $endDate = gmdate("Y-m-d\TH:i:s\Z", $endDate);
+        $query = $this->link->query("SELECT * FROM incomingorder WHERE username = '$username' AND (date BETWEEN '$startDate' AND '$endDate')");
+        $incomingRowcount = $query->rowCount();
+        $result = [];
+        $result1 = $query->fetchAll();
+
+        $query = $this->link->query("SELECT * FROM completeorder WHERE ProductOwner = '$username' AND buyer !='$username' AND (date BETWEEN '$startDate' AND '$endDate')");
+        $completeOrderRowcount = $query->rowCount();
+        $result2 = $query->fetchAll();
+        $result = array_merge($result1, $result2);
+        $totalRowCount = $completeOrderRowcount+$incomingRowcount;
+
+
+        //array_push($result, $result1,$result2);
+        
+        if($totalRowCount > 0){
+            return $result;
+
+        }else{
+            return 0;
+        }
+    }
+
+    function checkUnpaid($username,$month,$year){
+        $query = $this->link->query("SELECT * FROM billing WHERE username = '$username' AND month='$month' AND year='$year'");
+        $rowcount = $query->rowCount();
+        $result = $query->fetchAll();
+        return $result;
+    }
+
     function verifyDelivery($username,$purchasedID){
 
         $query = $this->link->query("SELECT * FROM purchased WHERE purchasedID = '$purchasedID'");
@@ -302,7 +336,7 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         if($status == "Open"){
             return 0;
         }else{
-
+            $completeID = $purchasedID;
             $purchasedID = $result[0]["id"];
             $username = $result[0]["username"];
             $productID = $result[0]["productID"];
@@ -316,12 +350,12 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
             $deliveryCode = $result[0]["deliveryCode"];
             $status = "Complete";
 
-            $query = $this->link->prepare("INSERT INTO completeOrder (username,productID,name,description,storeName,unitPrice,quantity,totalPrice,ProductOwner,status,deliveryCode,purchasedID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
-            $values = array($username,$productID,$name,$description,$storeName,$unitPrice,$quantity,$totalPrice,$productOwner,$status,$deliveryCode,$purchasedID);
+            $query = $this->link->prepare("INSERT INTO completeOrder (username,productID,name,description,storeName,unitPrice,quantity,totalPrice,ProductOwner,status,deliveryCode,purchasedID,buyer) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $values = array($username,$productID,$name,$description,$storeName,$unitPrice,$quantity,$totalPrice,$productOwner,$status,$deliveryCode,$purchasedID,$productOwner);
             $query->execute($values);
             $rowcount = $query->rowCount();
 
-            $query = $this->link->query("UPDATE incomingorder SET status ='$status' WHERE id = '$purchasedID'");
+            $query = $this->link->query("UPDATE incomingorder SET status ='$status' WHERE purchasedID = '$completeID'");
             $rowcount = $query->rowCount();
             var_dump($rowcount);
 
@@ -960,6 +994,71 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
             return $counts;
         }
 
+    }
+
+
+    function generateMonthlyBill($month,$year,$city){
+        $datetime = date_create()->format('Y-m-d H:i:s');
+        $dateObj   = DateTime::createFromFormat('!m', $month);
+        $monthName= $dateObj->format('F'); // March
+
+
+        $startDate = strtotime("1-$month-$year");
+        $endDate = strtotime("+1 month", $startDate); 
+
+
+        $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE city = '$city'");
+        $rowcount = $query->rowCount();
+        $searchUsernameByCity = $query->fetchAll();
+        $usernameList = [];
+
+        for ($i=0; $i < $rowcount ; $i++) { 
+            $username = $searchUsernameByCity[$i]["username"];
+            echo $username;
+             $query = $this->link->query("SELECT * FROM merkadu.incomingorder WHERE username = '$username' BETWEEN '$startDate' AND '$endDate'");
+            $incomingRowcount = $query->rowCount();
+       
+            $result1 = $query->fetchAll();
+            $query = $this->link->query("SELECT * FROM merkadu.completeorder WHERE ProductOwner = '$username' AND buyer !='$username' BETWEEN '$startDate' AND '$endDate'");
+            $completeOrderRowcount = $query->rowCount();
+            $result2 = $query->fetchAll();
+            $result = array_merge($result1, $result2);
+            $totalRowCount = $incomingRowcount+$completeOrderRowcount;
+
+            //echo $i;
+            //echo $result[$i]["totalPrice"];
+            $bill = [];
+            //var_dump($totalRowCount);
+            
+            for ($x=0; $x < $totalRowCount ; $x++) { 
+                 //var_dump($result[$i]["totalPrice"]);
+                array_push($bill,$result[$i]["totalPrice"]);
+            }
+
+            $totalBill = array_sum($bill);
+            $totalBill = round($totalBill*.10+3);
+            //var_dump($totalBill);
+            $status = "unpaid";
+            $totalRowCount = $completeOrderRowcount+$incomingRowcount;
+            //echo $username;
+            $query = $this->link->query("SELECT * FROM merkadu.billing WHERE username = '$username' BETWEEN '$startDate' AND '$endDate'");
+            $billingCount = $query->rowCount();
+            if($billingCount == 0){
+                $query = $this->link->prepare("INSERT INTO billing (username,date,month,year,status,totalBill) VALUES (?,?,?,?,?,?)");
+                $values = array($username,$datetime,$monthName,$year,$status,$totalBill);
+                $query->execute($values);
+
+            }else{
+                $query = $this->link->query("UPDATE merkadu.billing SET totalBill ='$totalBill' WHERE username='$username' BETWEEN '$startDate' AND '$endDate'");
+                
+            
+            }
+
+        }
+
+
+        
+        return 1;
     }
 
 }
