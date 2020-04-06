@@ -321,10 +321,28 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
     }
 
     function checkUnpaid($username,$month,$year){
-        $query = $this->link->query("SELECT * FROM billing WHERE username = '$username' AND month='$month' AND year='$year'");
+
+        $datetime = date_create()->format('Y-m-d H:i:s');
+        //$dateObj   = DateTime::createFromFormat('!m', $month);
+        //$monthName= $dateObj->format('F'); // March
+
+        $month = date_parse($month);
+        $monthInt = $month["month"];
+        $startDate = strtotime("1-$monthInt-$year");
+
+        $endDate = strtotime("+1 month", $startDate); 
+
+        $startDate = gmdate("Y-m-d\TH:i:s\Z", $startDate);
+        $endDate = gmdate("Y-m-d\TH:i:s\Z", $endDate);
+
+        $query = $this->link->query("SELECT * FROM billing WHERE username = '$username' AND (date BETWEEN '$startDate' AND '$endDate')");
         $rowcount = $query->rowCount();
         $result = $query->fetchAll();
-        return $result;
+        if($rowcount = 1){
+            return $result;
+        }else{
+            return $rowcount;
+        }
     }
 
     function verifyDelivery($username,$purchasedID){
