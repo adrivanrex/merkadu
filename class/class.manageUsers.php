@@ -338,11 +338,7 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         $query = $this->link->query("SELECT * FROM billing WHERE username = '$username' AND (date BETWEEN '$startDate' AND '$endDate')");
         $rowcount = $query->rowCount();
         $result = $query->fetchAll();
-        if($rowcount = 1){
-            return $result;
-        }else{
-            return $rowcount;
-        }
+        return $result;
     }
 
     function verifyDelivery($username,$purchasedID){
@@ -1077,6 +1073,33 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
         
         return 1;
+    }
+
+    function recievableTracker($month,$year,$city){
+        $datetime = date_create()->format('Y-m-d H:i:s');
+        $dateObj   = DateTime::createFromFormat('!m', $month);
+        //echo $dateObj;
+        $monthName= $dateObj->format('F'); // March
+
+
+        $startDate = strtotime("1-$month-$year");
+        $endDate = strtotime("+1 month", $startDate); 
+
+
+        $startDate = gmdate("Y-m-d\TH:i:s\Z", $startDate);
+        $endDate = gmdate("Y-m-d\TH:i:s\Z", $endDate);
+
+        //SELECT * FROM merkadu.billing INNER JOIN mlm.userinfo ON merkadu.billing.username=mlm.userinfo.username
+        $query = $this->link->query("SELECT * FROM merkadu.billing INNER JOIN mlm.userinfo ON merkadu.billing.username=mlm.userinfo.username AND (date BETWEEN '$startDate' AND '$endDate')");
+        $rowcount = $query->rowCount();
+        if($rowcount){
+            $result = $query->fetchAll();
+            return $result;
+        }else{
+            return 0;
+        }
+
+
     }
 
 }
