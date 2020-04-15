@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>merkadu | Dashboard</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- Morris -->
-    <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="../css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
     <!-- Gritter -->
-    <link href="js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="../js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
     <title>Merkadu Online services</title>
-    
+    <!--
      <script type="text/javascript">        
         if (window.location.protocol != "https:") {
            window.location.protocol = "https";
         }
     </script>
-	
+	-->
 
 </head>
 
@@ -33,7 +33,7 @@
                         <br>
                         <div class="">
                             <div class="dropdown"> 
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#"><img  class="img-circle" alt="image" width="50px" height="50px" src="img/def_face.jpg" /><br><b class="caret"></b></a>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#"><img  class="img-circle" alt="image" width="50px" height="50px" src="../img/def_face.jpg" /><br><b class="caret"></b></a>
                             <ul class="dropdown-menu animated fadeInRight">
                                 <li><a id="profile" href="#">Profile</a></li>
                                 <li><a id="verify" href="#">verification</a></li>
@@ -48,12 +48,14 @@
                     <li class="active">
                         <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li class="active"><a id="search" href="#">Search Product</a></li>
-                            <li><a id="searchByStore" href="#">Search Store</a></li>
-                            
+                            <li class="active"><a id="monthlyBilling" href="#">Monthly Billing</a></li>
+                            <li><a id="generateMonthlyBilling" href="#">Generate Monthly Billing</a></li>
+                            <!--
                             <li id="createStore"><a href="#">Create Store</a></li>
+                            -->
                         </ul>
                     </li>
+                    <!--
                     <li>
                         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Orders</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -66,7 +68,7 @@
                         <a id="paymentCenter" href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Cart</span></a>
                         <a id="billing" href="#"><i class="fa fa-angellist"></i> <span class="nav-label">Billing</span></a>
                     </li>
-                    <!--
+                    
                     <li class="">
                         <a target="_blank" id="paymentCenter" href="#"><i class="fa fa-star"></i> <span class="nav-label">Delivery Team</span> <span class="label pull-right">NEW</span></a>
                     </li>
@@ -158,37 +160,58 @@
         </div>
     </div>
     <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../js/jquery-2.1.1.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <!-- Flot -->
-    <script src="js/plugins/flot/jquery.flot.js"></script>
-    <script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-    <script src="js/plugins/flot/jquery.flot.spline.js"></script>
-    <script src="js/plugins/flot/jquery.flot.resize.js"></script>
-    <script src="js/plugins/flot/jquery.flot.pie.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.pie.js"></script>
     <!-- Peity -->
-    <script src="js/plugins/peity/jquery.peity.min.js"></script>
-    <script src="js/demo/peity-demo.js"></script>
+    <script src="../js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="../js/demo/peity-demo.js"></script>
     <!-- Custom and plugin javascript -->
-    <script src="js/merkadu.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="../js/merkadu.js"></script>
+    <script src="../js/plugins/pace/pace.min.js"></script>
     <!-- jQuery UI -->
-    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../js/plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- GITTER -->
-    <script src="js/plugins/gritter/jquery.gritter.min.js"></script>
+    <script src="../js/plugins/gritter/jquery.gritter.min.js"></script>
     <!-- EayPIE -->
-    <script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
+    <script src="../js/plugins/easypiechart/jquery.easypiechart.js"></script>
     <!-- Sparkline -->
-    <script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="../js/plugins/sparkline/jquery.sparkline.min.js"></script>
     <!-- Sparkline demo data  -->
-    <script src="js/demo/sparkline-demo.js"></script>
+    <script src="../js/demo/sparkline-demo.js"></script>
     <!-- ChartJS-->
-    <script src="js/plugins/chartJs/Chart.min.js"></script>
+    <script src="../js/plugins/chartJs/Chart.min.js"></script>
+    <script src="js/admin.js"></script>
     <script>
     $(document).ready(function() {
         
+
+        $('#iframeContent').attr('src', 'billing.html');
+    $("#monthlyBilling").click(function(){
+        $('#iframeContent').attr('src', 'billing.html');
+        $("body").toggleClass("mini-navbar");
+            SmoothlyMenu();
+    });
+
+    
+
+    $("#generateMonthlyBilling").click(function(){
+        $('#iframeContent').attr('src', 'searchByStore.html');
+        $("body").toggleClass("mini-navbar");
+            SmoothlyMenu();
+    });
+
+
+
+
+
          // Click on the checkbox
 
         server = window.location.hostname;
