@@ -1028,7 +1028,7 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
         for ($i=0; $i < $rowcount ; $i++) { 
             $username = $searchUsernameByCity[$i]["username"];
-            echo $username;
+            echo $username."<br>";
              $query = $this->link->query("SELECT * FROM merkadu.incomingorder WHERE username = '$username' BETWEEN '$startDate' AND '$endDate'");
             $incomingRowcount = $query->rowCount();
        

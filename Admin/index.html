@@ -203,7 +203,7 @@
     
 
     $("#generateMonthlyBilling").click(function(){
-        $('#iframeContent').attr('src', 'searchByStore.html');
+        $('#iframeContent').attr('src', '../robots/monthlybilling.php');
         $("body").toggleClass("mini-navbar");
             SmoothlyMenu();
     });
@@ -466,7 +466,13 @@
         };
     };
 
+   
+    user = JSON.parse(localStorage.getItem('userinfo'));
+    role = user.data[0]["role"];
 
+    if(role !== admin){
+        document.location = "index.html";
+    }
 
     Http = new XMLHttpRequest();
     searchTerm = null;
