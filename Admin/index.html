@@ -48,6 +48,7 @@
                     <li class="active">
                         <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
+                            <li><a id="approveProfile" href="#">Approve Profile</a></li>
                             <li class="active"><a id="monthlyBilling" href="#">Monthly Billing</a></li>
                             <li><a id="generateMonthlyBilling" href="#">Generate Monthly Billing</a></li>
                             <!--
@@ -207,6 +208,13 @@
         $("body").toggleClass("mini-navbar");
             SmoothlyMenu();
     });
+
+    $("#approveProfile").click(function(){
+        $('#iframeContent').attr('src', '../manageidverification.html');
+        $("body").toggleClass("mini-navbar");
+            SmoothlyMenu();
+    });
+
 
 
 
