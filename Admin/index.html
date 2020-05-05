@@ -51,6 +51,7 @@
                             <li><a id="approveProfile" href="#">Approve Profile</a></li>
                             <li class="active"><a id="monthlyBilling" href="#">Monthly Billing</a></li>
                             <li><a id="generateMonthlyBilling" href="#">Generate Monthly Billing</a></li>
+                            <li><a id="payBills" href="#">Pay Bills</a></li>
                             <!--
                             <li id="createStore"><a href="#">Create Store</a></li>
                             -->
@@ -214,7 +215,13 @@
         $("body").toggleClass("mini-navbar");
             SmoothlyMenu();
     });
+    
 
+    $("#payBills").click(function(){
+        $('#iframeContent').attr('src', '../payBills.html');
+        $("body").toggleClass("mini-navbar");
+            SmoothlyMenu();
+    });
 
 
 

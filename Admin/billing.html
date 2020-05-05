@@ -36,6 +36,7 @@
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
+                            <th>Username</th>
                             <th>Name</th>
                             <th>Address</th>
                             <th>City</th>
@@ -180,7 +181,7 @@
                     id = data.data[i]["id"];
                     lastName = data.data[i]["lastName"];
                     Name = ''+firstName+' '+lastName+'';
-
+                    username = data.data[i]["username"];
                     streetAddress = data.data[i]["streetAddress"];
                     secondAddress = data.data[i]["secondAddress"];
                     city = data.data[i]["city"];
@@ -196,7 +197,7 @@
                     totalBill.push(Number(Bill));
                     
 
-                    $("#billingData").append('<tr class="grade' + id + '"><td>' + Name + '</td><td>' + Address + ' </td><td>' + city + '</td><td class="center">' + date + '</td><td class="center">' + Bill + '</td></tr>');
+                    $("#billingData").append('<tr class="grade' + id + '"><td>'+username+'</td><td>' + Name + '</td><td>' + Address + ' </td><td>' + city + '</td><td class="center">' + date + '</td><td class="center">' + Bill + '</td></tr>');
 
                 }
 
@@ -245,7 +246,7 @@
                     id = data.data[i]["id"];
                     lastName = data.data[i]["lastName"];
                     Name = ''+firstName+' '+lastName+'';
-
+                    username = data.data[i]["username"];
                     streetAddress = data.data[i]["streetAddress"];
                     secondAddress = data.data[i]["secondAddress"];
                     city = data.data[i]["city"];
@@ -261,7 +262,7 @@
                     totalBill.push(Number(Bill));
                     
 
-                    $("#billingData").append('<tr class="grade' + id + '"><td>' + Name + '</td><td>' + Address + ' </td><td>' + city + '</td><td class="center">' + date + '</td><td class="center">' + Bill + '</td></tr>');
+                    $("#billingData").append('<tr class="grade' + id + '"><td>'+username+'</td><td>' + Name + '</td><td>' + Address + ' </td><td>' + city + '</td><td class="center">' + date + '</td><td class="center">' + Bill + '</td></tr>');
 
                 }
 
@@ -317,7 +318,7 @@
                     id = data.data[i]["id"];
                     lastName = data.data[i]["lastName"];
                     Name = ''+firstName+' '+lastName+'';
-
+                    username = data.data[i]["username"];
                     streetAddress = data.data[i]["streetAddress"];
                     secondAddress = data.data[i]["secondAddress"];
                     city = data.data[i]["city"];
@@ -333,7 +334,7 @@
                     totalBill.push(Number(Bill));
                     
 
-                    $("#billingData").append('<tr class="grade' + id + '"><td>' + Name + '</td><td>' + Address + ' </td><td>' + city + '</td><td class="center">' + date + '</td><td class="center">' + Bill + '</td></tr>');
+                    $("#billingData").append('<tr class="grade' + id + '"><td>'+username+'</td><td>' + Name + '</td><td>' + Address + ' </td><td>' + city + '</td><td class="center">' + date + '</td><td class="center">' + Bill + '</td></tr>');
 
                 }
 

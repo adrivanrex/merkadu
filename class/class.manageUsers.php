@@ -1102,6 +1102,27 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
     }
 
+    function payBills($username){
+        $status = "unpaid";
+        $query = $this->link->query("SELECT * FROM billing where username='$username' AND status ='$status'");
+        $rowcount = $query->rowCount();
+        $fetch = $query->fetchAll();
+
+        if($rowcount){
+            return $fetch;
+        }else{
+            return 0;
+        }
+
+    }
+
+    function updatePayBill($id){
+        $status = "paid";
+        $query = $this->link->query("UPDATE merkadu.billing SET status ='$status' WHERE id='$id'");
+        $rowcount = $query->rowCount();
+        return $rowcount;
+    }
+
 }
 
 ?>
