@@ -1015,10 +1015,14 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         $datetime = date_create()->format('Y-m-d H:i:s');
         $dateObj   = DateTime::createFromFormat('!m', $month);
         $monthName= $dateObj->format('F'); // March
-
+        echo $monthName;
 
         $startDate = strtotime("1-$month-$year");
         $endDate = strtotime("+1 month", $startDate); 
+
+
+        $startDate = gmdate("Y-m-d\TH:i:s\Z", $startDate);
+        $endDate = gmdate("Y-m-d\TH:i:s\Z", $endDate);
 
 
         $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE city = '$city'");
@@ -1029,11 +1033,11 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         for ($i=0; $i < $rowcount ; $i++) { 
             $username = $searchUsernameByCity[$i]["username"];
             echo $username."<br>";
-             $query = $this->link->query("SELECT * FROM merkadu.incomingorder WHERE username = '$username' BETWEEN '$startDate' AND '$endDate'");
+            $query = $this->link->query("SELECT * FROM merkadu.incomingorder WHERE username = '$username' AND (date BETWEEN '$startDate' AND '$endDate')");
             $incomingRowcount = $query->rowCount();
        
             $result1 = $query->fetchAll();
-            $query = $this->link->query("SELECT * FROM merkadu.completeorder WHERE ProductOwner = '$username' AND buyer !='$username' BETWEEN '$startDate' AND '$endDate'");
+            $query = $this->link->query("SELECT * FROM merkadu.completeorder WHERE ProductOwner = '$username' AND buyer !='$username' AND (date BETWEEN '$startDate' AND '$endDate')");
             $completeOrderRowcount = $query->rowCount();
             $result2 = $query->fetchAll();
             $result = array_merge($result1, $result2);
@@ -1051,23 +1055,22 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
             $totalBill = array_sum($bill);
             $totalBill = round($totalBill*.10+3);
-            //var_dump($totalBill);
+            var_dump($totalBill);
             $status = "unpaid";
             $totalRowCount = $completeOrderRowcount+$incomingRowcount;
-            //echo $username;
-            $query = $this->link->query("SELECT * FROM merkadu.billing WHERE username = '$username' BETWEEN '$startDate' AND '$endDate'");
-            $billingCount = $query->rowCount();
-            if($billingCount == 0){
+            echo $username."<br>";
+            $selectQuery = $this->link->query("SELECT * FROM merkadu.billing WHERE username = '$username' AND (date BETWEEN '$startDate' AND '$endDate')");
+            $billingCount = $selectQuery->rowCount();
+            echo "<b>".$billingCount."</b>";
+            if($billingCount){
+                $query = $this->link->query("UPDATE merkadu.billing SET totalBill ='$totalBill' WHERE username='$username'  AND (date BETWEEN '$startDate' AND '$endDate')");
+            }else{
                 $query = $this->link->prepare("INSERT INTO billing (username,date,month,year,status,totalBill) VALUES (?,?,?,?,?,?)");
                 $values = array($username,$datetime,$monthName,$year,$status,$totalBill);
                 $query->execute($values);
 
-            }else{
-                $query = $this->link->query("UPDATE merkadu.billing SET totalBill ='$totalBill' WHERE username='$username' BETWEEN '$startDate' AND '$endDate'");
-                
-            
             }
-
+            
         }
 
 
