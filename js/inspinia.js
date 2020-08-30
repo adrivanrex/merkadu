@@ -4,7 +4,7 @@ password = localStorage.getItem("password");
 
 $(document).ready(function () {
     $("#cartNavigation").click(function(){
-                alert(0);
+                //alert(0);
             });
 
     // MetsiMenu
@@ -242,7 +242,7 @@ $('.wrapper').on('click', '.editProduct', function() {
         SmoothlyMenu();
     })
     $(".buy").click(function(){
-        alert(this.id);
+        //alert(this.id);
     });
 
     // tooltips

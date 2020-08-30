@@ -118,8 +118,7 @@
             $("#incomingOrderList").empty();
             if (incomingOrderList.readyState == 4 && incomingOrderList.status == 200) {
             data = JSON.parse(incomingOrderList.responseText);
-            console.log(
-                "incoming", data);
+            console.log("incoming", data);
             if(data.data == 0){
                 $("#incomingOrderCheck").empty();
                 $("#incomingOrderCheck").append('<center><p>No incoming orders yet</p></center>');
@@ -142,6 +141,7 @@
                     deliveryCode = data.data[i]["deliveryCode"];
                     quantity = data.data[i]["quantity"];
                     buyerInfo = data.data[i]["buyerInfo"];
+                    
                     buyerfirstName = data.data[i]["buyerInfo"][0]["firstName"];
                     buyerLastName = data.data[i]["buyerInfo"][0]["lastName"];
                     buyerFullName = '' + buyerfirstName + ' ' + buyerLastName + '';
@@ -154,7 +154,7 @@
                     buyerMobileNumber = data.data[i]["buyerInfo"][0]["mobileNumber"];
                     
                     console.log("buyer info", buyerInfo);
-                    if(buyerVerification == true){
+                    if(buyerVerification == "verified"){
                         verification = '<div class="alert alert-success" role="alert"><i class="fas fa-shield-alt"></i> Verified</div>'
 
                     }else{

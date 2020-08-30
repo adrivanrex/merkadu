@@ -393,13 +393,35 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         $query = $this->link->query("SELECT * FROM incomingorder WHERE username = '$username' ORDER BY status='Open' LIMIT 100");
         $rowcount = $query->rowCount();
         $result = $query->fetchAll();
+
         for ($x=0; $x < count($result); $x++) { 
             $buyer = $result[$x]["buyer"];
+
             $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE username = '$buyer'");
             $BuyerInforesult = $query->fetchAll();
+
             $result[$x]["buyerInfo"] = $BuyerInforesult;
 
         }
+
+        return $result;
+    }
+
+    function incomingOrderListNotification($username){
+        $query = $this->link->query("SELECT * FROM incomingorder WHERE username = '$username' AND status='Open' LIMIT 100");
+        $rowcount = $query->rowCount();
+        $result = $query->fetchAll();
+
+        for ($x=0; $x < count($result); $x++) { 
+            $buyer = $result[$x]["buyer"];
+
+            $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE username = '$buyer'");
+            $BuyerInforesult = $query->fetchAll();
+
+            $result[$x]["buyerInfo"] = $BuyerInforesult;
+
+        }
+
         return $result;
     }
 

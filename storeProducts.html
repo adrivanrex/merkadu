@@ -325,7 +325,7 @@
                 price = data.data[i].unitPrice;
                 userinfo = localStorage.getItem("userinfo");
                 userinfo = JSON.parse(userinfo);
-                titleLink = 'view.php?id=' + id + '';
+                titleLink = 'pages.php?id=' + id + '';
                 console.log("userinfos", userinfo.data[0].role);
                 if (userinfo.data[0].role == "admin") {
                     bannedUser = '<button id=' + id + ' type="submit"  class="banProduct btn-primary btn-lg">BanProduct</button>';

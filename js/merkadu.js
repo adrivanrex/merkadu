@@ -43,6 +43,10 @@ $(document).ready(function () {
         $('#iframeContent').attr('src', 'manageOrders.html');
     });
 
+    $(".manageOrders").click(function(){
+        $('#iframeContent').attr('src', 'manageOrders.html');
+    });
+
     $('#createStore').click(function(){
         $('#iframeContent').attr('src', 'createStore.html');
     });

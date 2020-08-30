@@ -121,14 +121,19 @@
                 $("#purchasedList").empty();
                 purchasedList.onreadystatechange = (e) => {
                     data = JSON.parse(purchasedList.responseText);
+                    if(data.data == 0){
+                        $("#purchasedList").empty();
+                        $("#purchasedList").append('No purchased item yet. Buy a product to see purchased Item');
+                    }
+
                     console.log("purchasedList", data);
                     fullName = ''+data.user[0]["firstName"]+' '+data.user[0]["lastName"]+'';
                     //console.log(data.user);
                     address = ''+data.user[0]["streetAddress"]+' '+data.user[0]["secondAddress"]+' '+data.user[0]["state"]+' '+data.user[0]["city"]+'';
                     verifyAccount = data.user[0]["verified"];
                     //alert(verifyAccount);
-                    if(verifyAccount == true){
-                    	//verification = '<div class="alert alert-success" role="alert"><i class="fas fa-shield-alt"></i> Verified</div>'
+                    if(verifyAccount == "verified"){
+                    	verification = '<div class="alert alert-success" role="alert"><i class="fas fa-shield-alt"></i> Verified</div>'
                     }else{
                     	verification = '<div class="alert alert-danger" role="alert"><i class="fas fa-shield-alt"></i> Your account is unverified. Please verify your account <a href="verifyProfile.html">here</a></div>'
                     }

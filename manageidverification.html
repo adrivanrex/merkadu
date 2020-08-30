@@ -105,6 +105,7 @@
 
     function getphotoVerificationList() {
         photoVerificationList = new XMLHttpRequest();
+        user =  localStorage.getItem("username");
         var server = "http://merkadu.tk/";
         url = '/graph/manageIdVerification.php?username=' + username + '&password=' + password + '';
         console.log(url);
@@ -138,7 +139,7 @@
                         city = ''+data[i]["city"]+'';
 
 
-                         $("#photoVerificationList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#">' + fullName + '</a><br/><small>'+streetAddress+' '+secondAddress+' '+city+' '+state+' </small><br><small>Created ' + date + '</small></td><td><td class="project-completion"><img src="uploads/'+picture+'"><img><br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"> <strong></strong><a id="' + username + '"href="#" class="acceptProfile btn btn-white btn-sm"><i class="fa pencil"></i> Accept </a><a id="' + username + '"href="#" class="declineProfile btn btn-white btn-sm"><i class="fa pencil"></i> Decline </a></td></tr>');
+                         $("#photoVerificationList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#">' + fullName + '</a><br/><small>'+streetAddress+' '+secondAddress+' '+city+' '+state+' </small><br><small>Created ' + date + '</small></td><td><td class="project-completion"><img width="400px" src="uploads/'+picture+'"><img><br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"> <strong></strong><a id="' + username + '"href="#" class="acceptProfile btn btn-white btn-sm"><i class="fa pencil"></i> Accept </a><a id="' + username + '"href="#" class="declineProfile btn btn-white btn-sm"><i class="fa pencil"></i> Decline </a></td></tr>');
                     }
                    
 
@@ -149,7 +150,7 @@
         $('.wrapper').on('click', '.acceptProfile', function() {
             //alert(this.id);
             profileToVerify = this.id;
-            
+            username =  localStorage.getItem("username");
             acceptProfileVerification = new XMLHttpRequest();
             var server = "http://merkadu.tk/";
             url = '/graph/acceptProfileVerification.php?username=' + username + '&password=' + password + '&profileToVerify='+profileToVerify+'';
@@ -174,7 +175,7 @@
         $('.wrapper').on('click', '.declineProfile', function() {
             //alert(this.id);
             profileToVerify = this.id;
-            
+            username =  localStorage.getItem("username");
             declineProfileVerification = new XMLHttpRequest();
             var server = "http://merkadu.tk/";
             url = '/graph/declineProfileVerification.php?username=' + username + '&password=' + password + '&profileToVerify='+profileToVerify+'';

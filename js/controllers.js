@@ -74,6 +74,7 @@ function MainCtrl($scope) {
             fullName = '' + data.details.firstName + ' ' + data.details.lastName + '';
             $scope.fullName = fullName;
             //console.log($scope.fullName);
+            $("fullName").append(fullName);
             $scope.firstName = data.details.firstName;
             $scope.username = data.details.username;
             $scope.password = password;

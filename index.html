@@ -42,7 +42,7 @@
                         <br>
                         <div class="">
                             <div class="dropdown"> 
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#"><img  class="img-circle" alt="image" width="50px" height="50px" src="img/def_face.jpg" /><br><b class="caret"></b></a>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#"><img  class="img-circle" alt="image" width="50px" height="50px" src="img/def_face.jpg" /><br><span id="fullName"></span><b class="caret"></b></a>
                             <ul class="dropdown-menu animated fadeInRight">
                                 <li><a id="profile" href="#">Profile</a></li>
                                 <li><a id="verify" href="#">verification</a></li>
@@ -60,7 +60,7 @@
                             <li class="active"><a id="search" href="#">Search Product</a></li>
                             <li><a id="searchByStore" href="#">Search Store</a></li>
                             
-                            <li id="createStore"><a href="#">Create Store</a></li>
+                            <li id="createStore"><a href="#">Manage Store</a></li>
                         </ul>
                     </li>
                     <li>
@@ -102,10 +102,75 @@
                         <li>
                             <a href="http://merkadu-support.tk"><i class="fa fa-question-circle fa-6"></i></a>
                         </li>
+                        <!--
                          <li class="dropdown">
                             <a id="cartNavigation" class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <i class="fa fa-shopping-cart"></i> <span id="cartBuy" class="label label-warning"></span>
                             </a>
+                        </li>
+                    -->
+                        <li class="blue">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <i class="ace-icon fa fa-bell icon-animated-bell"></i>
+                                <span  class="incomingordernotification badge badge-important"></span>
+                            </a>
+
+                            <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+                                <li class="dropdown-header">
+                                    <i class="ace-icon fa fa-exclamation-triangle"></i>
+                                    <span class="incomingordernotification"> Notifications
+                                </li>
+                                <!--
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <span class="pull-left">
+                                                <i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>
+                                                New Comments
+                                            </span>
+                                            <span class="pull-right badge badge-info">+12</span>
+                                        </div>
+                                    </a>
+                                </li>
+    
+                                <li>
+                                    <a href="#">
+                                        <i class="btn btn-xs btn-primary fa fa-user"></i>
+                                        Bob just signed up as an editor ...
+                                    </a>
+                                </li>
+                                -->
+                                <li class="manageOrders">
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <span class="pull-left">
+                                                <i class="manageOrders btn btn-xs no-hover btn-success fa fa-shopping-cart"></i>
+                                                New Orders
+                                            </span>
+                                            <span class="manageOrders incomingordernotification pull-right badge badge-success"></span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <!--
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <span class="pull-left">
+                                                <i class="btn btn-xs no-hover btn-info fa fa-twitter"></i>
+                                                Followers
+                                            </span>
+                                            <span class="pull-right badge badge-info">+11</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                -->
+                                <li class="dropdown-footer">
+                                    <a href="#">
+                                        See all notifications
+                                        <i class="ace-icon fa fa-arrow-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="logout.php">
@@ -231,6 +296,41 @@
 
 
         }
+
+
+        setInterval(function(){ getIncomingOrderNotificationNumber(server); }, 1000);
+
+        function getIncomingOrderNotificationNumber(server) {
+            Http = new XMLHttpRequest();
+            //var server = "http://hantakserver/";
+            server = window.location.hostname;
+            //var server = "http://merkadu/";
+            
+            url = '/graph/incomingorderlistnotification.php?username=' + username + '&password=' + password + '';
+            //console.log(url);
+            Http.open("GET", url);
+
+            Http.send();
+
+            Http.onreadystatechange = (e) => {
+
+                if (Http.readyState == 4 && Http.status == 200) {
+                    //console.log(JSON.parse(Http.responseText));
+                    data = JSON.parse(Http.responseText);
+                    //console.log("cartList", );
+                    $(".incomingordernotification").empty();
+                    $(".incomingordernotification").append(data.data.length);
+
+                };
+            };
+
+
+        }
+
+
+        
+
+
         $("#cartNavigation").click(function() {
             //alert(0);
 
