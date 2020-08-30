@@ -25,7 +25,7 @@ $productInfo = $users->productInfo($productID);
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <meta property="og:title" content="Merkadu <?php echo $productInfo[0]["name"];?>" />
+    <meta property="og:title" content="Merkadu <?php echo $productInfo[0]["name"];?> <?php echo $productInfo[0]["description"];?>" />
     <meta property="og:description" content="<?php echo $productInfo[0]["description"];?>" />
     <meta property="og:type" content="video.movie" />
     <meta property="og:url" content="http://merkadu.tk">
