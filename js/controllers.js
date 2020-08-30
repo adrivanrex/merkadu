@@ -45,9 +45,13 @@ function MainCtrl($scope) {
     var server = "http://merkaducentral.tk/";
     username = localStorage.getItem("username");
     password = localStorage.getItem("password");
+    
     if (!username) {
         window.location.href = "login.html";
     }
+
+
+
     url = '' + server + '/graph/userinfo.php?username=' + username + '&password=' + password + '';
     console.log(url);
     Http.open("GET", url);
@@ -161,8 +165,7 @@ function MainCtrl($scope) {
 
             };
 
-            //alert(a);
-
+            
             function cashoutListA($scope) {
                 username = localStorage.getItem("username");
                 password = localStorage.getItem("password");

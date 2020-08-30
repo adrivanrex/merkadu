@@ -2,7 +2,13 @@
 username = localStorage.getItem("username");
 password = localStorage.getItem("password");
 
+
+
+            
+
 $(document).ready(function () {
+
+    
     $("#cartNavigation").click(function(){
                 //alert(0);
             });

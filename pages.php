@@ -151,6 +151,15 @@ $productInfo = $users->productInfo($productID);
                 if (Http.readyState == 4 && Http.status == 200) {
                     console.log(JSON.parse(Http.responseText));
                     data = JSON.parse(Http.responseText);
+                    //alert(typeof  data.status);
+                    if(typeof  data.status === "undefined"){
+                    document.location = "login.html"; 
+                    localStorage.setItem("lastBuy", this.id);
+                    localStorage.setItem("quantity", quantity);
+                    }
+                    if(data.status == 1){
+                    document.location = 'Managepayments.html';
+                }
 
                 };
             };
