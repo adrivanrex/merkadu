@@ -75,11 +75,13 @@
                 </div>
 
                 <div class="form-group">
-                    <input id="postalCode" type="text" class="form-control" placeholder="Postal Code" required="">
+                    <input id="postalCode" type="text" class="hidden form-control" placeholder="Postal Code" value="0" required="">
                 </div>
 
                 <div class="form-group">
-                    <input id="city" type="text" class="form-control" placeholder="City" required="">
+                    <select id="city" type="text" class="form-control" placeholder="City" required="">
+                        <option id="mainLocation" value="">City</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -113,7 +115,7 @@
                 </div>
                 -->
                 <div class="form-group">
-                   <a href="http://merkadu/terms/index.html">Terms and Policy</a>
+                   <a href="/terms/index.html">Terms and Policy</a>
                 </div>
 
                 <div class="form-group">
@@ -127,16 +129,31 @@
         </div>
     </div>
     <!-- Mainly scripts -->
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  ></script>
+    
+<script src="js/jquery-2.1.1.js"></script>
 
   
 
 
     <script src="js/bootstrap-select.min.js"></script>
     <script src="dist/js/bootstrap-select-country.min.js"></script>
+    <script src="js/admincities.js"></script>
 <script>
+    cities = []
+        console.log(city);
+        for (var i = city.length - 1; i >= 0; i--) {
+                cities.push(city[i]["name"]);
+            //$("#city").append('<option value="'+city[i]["name"]+'">'+city[i]["name"]+'</option>');
+
+
+        }
+        console.log(cities);
+        cities.sort();
+        for (var i = cities.length - 1; i >= 0; i--) {
+            $("#city").append('<option value="'+cities[i]+'">'+cities[i]+'</option>');
+        }
+
+
     document.getElementById("submit-form").addEventListener("click", check_info);
     sessionStorage.clear();
     function check_info() {
@@ -159,7 +176,16 @@
         var postalCode = document.getElementById("postalCode").value; 
         var secondAddress = document.getElementById("secondAddress").value; 
         var countryPick = document.getElementById("country").value;
-        var city = document.getElementById("city").value;
+        //var city = document.getElementById("city").value;
+
+
+
+
+
+        
+
+
+        var city = $("#city").val();
         var postalCode = document.getElementById("postalCode").value;
         var referalCompany = "Microsoft";
         var dateOfBirth = document.getElementById("dateOfBirth").value;

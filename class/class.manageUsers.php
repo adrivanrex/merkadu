@@ -400,6 +400,23 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
             $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE username = '$buyer'");
             $BuyerInforesult = $query->fetchAll();
 
+            $deliveryID = $result[$x]["purchasedID"];
+            $query = $this->link->query("SELECT * FROM incomingrider WHERE deliveryID = '$deliveryID'");
+            
+            $rowcount = $query->rowCount();
+            if($rowcount == 0){
+                $result[$x]["riderInfo"] = 0;
+            }else{
+                $riderInforesult = $query->fetchAll();
+                $result[$x]["riderInfo"] = $riderInforesult;
+                $occupant = $result[$x]["riderInfo"][0]["occupant"];
+
+                $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE username = '$occupant'");
+                $riderInforesult = $query->fetchAll();
+                $result[$x]["occupant"] = $riderInforesult;
+            }
+
+            
             $result[$x]["buyerInfo"] = $BuyerInforesult;
 
         }
@@ -670,11 +687,21 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
 
 
     function addProduct($username,$productName,$productDescription,$productPrimaryPicture,$storeName,$unitPrice,$quantity){
-        $datetime = date_create()->format('Y-m-d H:i:s');
-        $query = $this->link->prepare("INSERT INTO products (username,name,description,picture,date,storeName,unitPrice,quantity,productOwner) VALUES (?,?,?,?,?,?,?,?,?)");
-        $values = array($username,$productName,$productDescription,$productPrimaryPicture,$datetime,$storeName,$unitPrice,$quantity,$username);
-        $query->execute($values);
-        $counts = $query->rowCount();
+
+        /** Filter duplicate content **/
+        $query = $this->link->query("SELECT * FROM products WHERE username = '$username' AND name = '$productName'");
+        $rowcount = $query->rowCount();
+        if($rowcount){
+            $counts = 2;
+        }else{
+            $datetime = date_create()->format('Y-m-d H:i:s');
+            $query = $this->link->prepare("INSERT INTO products (username,name,description,picture,date,storeName,unitPrice,quantity,productOwner) VALUES (?,?,?,?,?,?,?,?,?)");
+            $values = array($username,$productName,$productDescription,$productPrimaryPicture,$datetime,$storeName,$unitPrice,$quantity,$username);
+            $query->execute($values);
+            $counts = $query->rowCount();
+        }
+
+        
         return $counts;
 
     }
@@ -819,7 +846,7 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
     }
 
     function bannedPostingProduct($username,$productID){
-        $query = $this->link->query("DELETE FROM products WHERE id = '$productID'");
+        $query = $this->link->query("DELETE FROM products WHERE productOwner = '$username'");
         $rowcount = $query->rowCount();
 
         $status = "bannedPostingProduct";
@@ -1115,7 +1142,7 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         $endDate = gmdate("Y-m-d\TH:i:s\Z", $endDate);
 
         //SELECT * FROM merkadu.billing INNER JOIN mlm.userinfo ON merkadu.billing.username=mlm.userinfo.username
-        $query = $this->link->query("SELECT * FROM merkadu.billing INNER JOIN mlm.userinfo ON merkadu.billing.username=mlm.userinfo.username AND (date BETWEEN '$startDate' AND '$endDate')");
+        $query = $this->link->query("SELECT * FROM merkadu.billing INNER JOIN mlm.userinfo ON merkadu.billing.username=mlm.userinfo.username AND (date BETWEEN '$startDate' AND '$endDate') WHERE city='$city'");
         $rowcount = $query->rowCount();
         if($rowcount){
             $result = $query->fetchAll();
@@ -1146,6 +1173,70 @@ function registerUsers($username,$password,$firstName,$middleName,$lastName,$mob
         $query = $this->link->query("UPDATE merkadu.billing SET status ='$status' WHERE id='$id'");
         $rowcount = $query->rowCount();
         return $rowcount;
+    }
+
+    function requestRider($id){
+        $datetime = date_create()->format('Y-m-d H:i:s');
+        $query = $this->link->query("SELECT * FROM incomingrider WHERE deliveryID = '$id'");
+        $rowcount = $query->rowCount();
+        if($rowcount == 1){
+            return 0;
+        }else{
+            $status = "Open";
+            $query = $this->link->prepare("INSERT INTO incomingrider (date,deliveryID,status) VALUES (?,?,?)");
+            $values = array($datetime,$id,$status);
+            $query->execute($values);
+            return $id;
+        }
+    }
+
+    function incomingRiderList(){
+        $query = $this->link->query("SELECT * FROM incomingrider ORDER BY status='Open' LIMIT 100");
+        $rowcount = $query->rowCount();
+        $result = $query->fetchAll();
+
+        for ($x=0; $x < count($result); $x++) { 
+            $deliveryID = $result[$x]["deliveryID"];
+
+            $query = $this->link->query("SELECT * FROM incomingorder WHERE purchasedID = '$deliveryID'");
+            $BuyerInforesult = $query->fetchAll();
+            
+            $productOwner = $BuyerInforesult[0]["productOwner"];
+
+
+            $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE username = '$productOwner'");
+            $BuyerInforesult = $query->fetchAll();
+
+            $result[$x]["buyerInfo"] = $BuyerInforesult;
+
+        }
+
+        return $result;
+
+        
+    }
+
+    function checkRiderStatus($deliveryID){
+        $query = $this->link->query("SELECT * FROM incomingrider WHERE deliveryID = '$deliveryID'");
+        $rowcount = $query->rowCount();
+        $result = $query->fetchAll();
+        return $rowcount;
+    }
+
+    function acceptRiderJob($username,$purchasedID){
+        $query = $this->link->query("SELECT * FROM mlm.userinfo WHERE username = '$username'");
+        $rowcount = $query->rowCount();
+        $result = $query->fetchAll();
+
+        if($result[0]["role"] == "admin"||$result[0]["role"] == "rider"){
+           $query = $this->link->query("UPDATE incomingrider SET status ='occupied' WHERE deliveryID='$purchasedID'");
+            $query = $this->link->query("UPDATE incomingrider SET occupant ='$username' WHERE deliveryID='$purchasedID'");
+            $rowcount = $query->rowCount();
+            return $rowcount; 
+        }else{
+            return 3;
+        }
+        
     }
 
 }

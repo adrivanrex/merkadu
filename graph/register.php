@@ -6,20 +6,6 @@ $users = new ManageUsers();
 
 header('Access-Control-Allow-Origin: *');
 
-$username = $_GET["username"];
-$password = $_GET["password"];
-$firstName = $_GET["firstName"];
-$middleName = $_GET['middleName'];
-$lastName = $_GET['lastName'];
-$mobileNumber = $_GET['mobileNumber'];
-$email = $_GET['email'];
-
-/**
-$sponsor = $_GET['sponsor'];
-$upline = $_GET['upline'];
-$placement = $_GET['placement'];
-$registrationCode = $_GET['registrationCode'];
-**/
 function antiXss($string){
 	$string = str_replace("<","",$string);
 	$string = str_replace(">","",$string);
@@ -28,32 +14,48 @@ function antiXss($string){
 	return $string;
 }
 
+
+$username = $_GET["username"];
+$password = $_GET["password"];
+$firstName = antiXss($_GET["firstName"]);
+$middleName = antiXss($_GET['middleName']);
+$lastName = antiXss($_GET['lastName']);
+$mobileNumber = antiXss($_GET['mobileNumber']);
+$email = antiXss($_GET['email']);
+
+/**
+$sponsor = $_GET['sponsor'];
+$upline = $_GET['upline'];
+$placement = $_GET['placement'];
+$registrationCode = $_GET['registrationCode'];
+**/
+
 $username = antiXss($username);
 
 $paypal = "none";
 $dateTime = date("H:i:s");
 
 
-$country = $_GET["country"];
-$continent = $_GET["continent"];
+$country = antiXss($_GET["country"]);
+$continent = antiXss($_GET["continent"]);
 $currency = $_GET["currency"];
-$state = $_GET["state"];
+$state = antiXss($_GET["state"]);
 
 /**
 $registrationCode = $_GET["registrationCode"];
 
 **/
 
-$city = $_GET["city"];
-$streetAddress = $_GET["streetAddress"];
-$secondAddress = $_GET["secondAddress"];
+$city = antiXss($_GET["city"]);
+$streetAddress = antiXss($_GET["streetAddress"]);
+$secondAddress = antiXss($_GET["secondAddress"]);
 $postalCode = $_GET["postalCode"];
 $referalCompany = $_GET["referalCompany"];
 
-$bdayYear = $_GET["bdayYear"];
-$bdayMonth = $_GET["bdayMonth"];
-$bdayDay = $_GET["bdayDay"];
-$gender = $_GET["gender"];
+$bdayYear = antiXss($_GET["bdayYear"]);
+$bdayMonth = antiXss($_GET["bdayMonth"]);
+$bdayDay = antiXss($_GET["bdayDay"]);
+$gender = antiXss($_GET["gender"]);
 
 /**
 if (is_numeric($bdayYear)) { } else { 

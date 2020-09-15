@@ -21,7 +21,11 @@ $(document).ready(function () {
     });
 
 
-
+     
+     $("#manageRiders").click(function(){
+        $('#iframeContent').attr('src', 'manageRiders.html');
+    });
+     
     $("#paymentCenter").click(function(){
         $('#iframeContent').attr('src', 'managePayments.html');
     });

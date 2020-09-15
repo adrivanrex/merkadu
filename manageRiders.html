@@ -105,7 +105,7 @@
     function getIncomingOrderList() {
         incomingOrderList = new XMLHttpRequest();
         var server = "http://merkadu.tk/";
-        url = '/graph/incomingOrderList.php?username=' + username + '&password=' + password + '';
+        url = '/graph/incomingRiderList.php?username=' + username + '&password=' + password + '';
         console.log(url);
         incomingOrderList.open("GET", url);
 
@@ -131,15 +131,7 @@
             console.log("incoming");
                 for (var i = data.data.length - 1; i >= 0; i--) {
                     //.data[i]
-                    productName = data.data[i]["name"];
-                    productDescription = data.data[i]["productDescription"];
-                    quantity = data.data[i]["quantity"];
-                    productUnitPrice = data.data[i]["productUnitPrice"];
-                    totalProductPrice = data.data[i]["totalPrice"];
-                    id = data.data[i]["id"];
-                    date = data.data[i]["date"];
-                    deliveryCode = data.data[i]["deliveryCode"];
-                    quantity = data.data[i]["quantity"];
+                    
                     buyerInfo = data.data[i]["buyerInfo"];
                     
                     buyerfirstName = data.data[i]["buyerInfo"][0]["firstName"];
@@ -149,40 +141,11 @@
                     buyerSecondAddress = data.data[i]["buyerInfo"][0]["secondAddress"];
                     buyerInfoCity = data.data[i]["buyerInfo"][0]["city"];
                     buyerAddress = '' + buyerStreetAddress + ' ' + buyerSecondAddress + ' ' + buyerInfoCity + '';
-                    purchasedID = data.data[i]["purchasedID"];
+                    purchasedID = data.data[i]["deliveryID"];
                     buyerVerification = data.data[i]["buyerInfo"][0]["verified"];
                     buyerMobileNumber = data.data[i]["buyerInfo"][0]["mobileNumber"];
-                    riderInfo = data.data[i]["riderInfo"];
-                    riderMessage = "Hire a rider";
-                    riderCheck = "hireRider";
-                    riderIcon = "fa-bicycle";
-                    console.log("riderInfo",riderInfo);
-
                     
-                    
-                    
-                    if(riderInfo){
-                        riderDetails = data.data[i]["occupant"];
-                        console.log("riderDetails", riderDetails)
-                        if(riderDetails !== 0){
-                        }else{
-                            
-                        }
-                        //console.log("occupant",riderDetails[0]["firstName"]);
-                        riderMessage = "Waiting for Rider";
-                        riderCheck = "hireRider";
-                        riderIcon = "fa-bicycle";
-                        if(riderInfo[0]["occupant"]){
-
-                            riderFirstName = riderDetails[0]["firstName"];
-                            riderLastName = riderDetails[0]["lastName"];
-                            riderFullName = ''+riderFirstName+' '+riderLastName+'';
-                            
-                            riderMessage = 'rider ('+riderFullName+') is coming..';
-                        }
-                    }
-                    
-                    //console.log("buyer info", buyerInfo);
+                    console.log("buyer info", buyerInfo);
                     if(buyerVerification == "verified"){
                         verification = '<div class="alert alert-success" role="alert"><i class="fas fa-shield-alt"></i> Verified</div>'
 
@@ -192,14 +155,15 @@
                     }
 
                     status = data.data[i]["status"];
-                    if(status == "on-delivery"){
-                        deliveryMessage = "delivering";
+                    occupant = data.data[i]["occupant"];
+                    if(status == "occupied"){
+                        deliveryMessage = 'Occupied by '+occupant+'';
                         deliveryIcon = 'fa-car';
                         deliverProduct = 'deliverProduct';
 
                     }
                     if(status == "Open"){
-                        deliveryMessage = "Accept Delivery";
+                        deliveryMessage = "Accept Job";
                         deliveryIcon = "fa-pencil";
                         deliverProduct = "deliverProduct";
                     }
@@ -208,73 +172,19 @@
                         deliveryMessage = "Complete";
                         deliveryIcon = 'fa-car';
                         deliverProduct = "ab";
-                        riderMessage = "Mission Completed";
                     }
 
-                    
+                    riderMessage = "Hire a rider";
+                    riderCheck = "hireRider";
+                    riderIcon = "fa-bicycle";
 
-                    $("#incomingOrderList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#">' + productName + '</a><br/><small>Product ID: ' + id + '</small><br><small>Created ' + date + '</small></td><td><td class="project-completion">'+verification+'<small>To:' + buyerFullName + '</small><br><small>Address:' + buyerAddress + '</small><br><small>Quantity:' + quantity + '</small><br>Mobile: '+buyerMobileNumber+'</br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"><h2>ID:'+purchasedID+' </h2> <strong></strong><a id="' + purchasedID + '"href="#" class="'+deliverProduct+' btn btn-white btn-sm"><i class="fa '+deliveryIcon+'"></i> '+deliveryMessage+' </a><a id="' + purchasedID + 'rider" href="#" class="'+riderCheck+' btn btn-white btn-sm"><i class="fa '+riderIcon+'"></i> '+riderMessage+'  </a></td></tr>');
-                    
-
-
-                    /**
-
-                    requestRider = new XMLHttpRequest();
-                     var server = "http://merkadu.tk/";
-                     id = purchasedID
-                     url = '/graph/checkRiderStatus.php?username=' + username + '&password=' + password + '&id='+id+'';
-                    console.log(url);
-                    requestRider.open("GET", url);
-
-                    requestRider.send();
-
-
-
-                    requestRider.onreadystatechange = (e) => {
-                        
-                       
-                        if (requestRider.readyState == 4 && requestRider.status == 200) {
-                            data = JSON.parse(requestRider.responseText);
-                             console.log("requestRider", data);
-                             if(data.data !== 0){
-
-                                $('#'+data.data+'rider').empty("");
-                                $('#'+data.data+'rider').append("Waiting for Rider");
-                             }
-
-                        }}
-
-                        **/
+                    $("#incomingOrderList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#"></a><br/></td><td><td class="project-completion">'+verification+'<small>To:' + buyerFullName + '</small><br><small>Address:' + buyerAddress + '</small><br><br>Mobile: '+buyerMobileNumber+'</br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"><h2>ID:'+purchasedID+' </h2> <strong></strong><a id="' + purchasedID + '"href="#" class="'+deliverProduct+' btn btn-white btn-sm"><i class="fa '+deliveryIcon+'"></i> '+deliveryMessage+' </a></td></tr>');
 
                 }
             };
         }
-
         $('.wrapper').on('click', '.hireRider', function() {
-            //alert("hire");
-            requestRider = new XMLHttpRequest();
-             var server = "http://merkadu.tk/";
-             id = this.id.replace("rider", "");
-             url = '/graph/requestRider.php?username=' + username + '&password=' + password + '&id='+id+'';
-            console.log(url);
-            requestRider.open("GET", url);
-
-            requestRider.send();
-
-
-
-            requestRider.onreadystatechange = (e) => {
-                
-               
-                if (requestRider.readyState == 4 && requestRider.status == 200) {
-                    data = JSON.parse(requestRider.responseText);
-                     console.log("requestRider", data);
-                     if(data.data !== 0){
-                        $('#'+data.data+'rider').empty("");
-                        $('#'+data.data+'rider').append("Waiting for Rider");
-                     }
-
-                }}
+            alert("hire");
         });
 
         $('.wrapper').on('click', '.deliverProduct', function() {
@@ -283,7 +193,7 @@
             
             acceptIncomingDelivery = new XMLHttpRequest();
             var server = "http://merkadu.tk/";
-            url = '/graph/acceptIncomingDelivery.php?username=' + username + '&password=' + password + '&purchasedID='+this.id+'';
+            url = '/graph/acceptRiderJob.php?username=' + username + '&password=' + password + '&purchasedID='+this.id+'';
             console.log(url);
             acceptIncomingDelivery.open("GET", url);
 
@@ -295,7 +205,10 @@
                 data = JSON.parse(acceptIncomingDelivery.responseText);
                 
                 if (acceptIncomingDelivery.readyState == 4 && acceptIncomingDelivery.status == 200) {
-                    console.log(data);
+                    console.log(data.status);
+                    if(data.status == 3){
+                        alert("Not allowed, You can apply as a rider by emailing adrivanrex@gmail.com");
+                    }
                 }
             };
 

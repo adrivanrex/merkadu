@@ -25,6 +25,21 @@
             <div class="col-lg-2">
             </div>
             <div class="ibox-content">
+            <div class="input-group form-inline">
+            <div class="col-lg-4">
+               City: <select id="citySearchProduct" type="text" class="form-control input-lg">
+                
+            <option id="mainLocation" value=""></option>
+        
+                </select>
+                <button id="generateBilling" class="search btn btn-lg btn-primary" type="submit">
+                    Generate Billing
+                </button>
+            </div>
+        </div><br>
+
+
+
                 Month: <p id="month"></p><br>
                 <center>
                     <div class="btn-group">
@@ -66,9 +81,28 @@
     <!-- Custom and plugin javascript -->
     <script src="../js/inspinia.js"></script>
     <script src="../js/plugins/pace/pace.min.js"></script>
+    <script src="../js/admincities.js"></script>
     <!-- Page-Level Scripts -->
     <script>
     $(document).ready(function() {
+
+
+
+        cities = []
+        console.log(city);
+        for (var i = city.length - 1; i >= 0; i--) {
+                cities.push(city[i]["name"]);
+            //$("#citySearchProduct").append('<option value="'+city[i]["name"]+'">'+city[i]["name"]+'</option>');
+
+
+        }
+        console.log(cities);
+        cities.sort();
+        for (var i = cities.length - 1; i >= 0; i--) {
+            $("#citySearchProduct").append('<option value="'+cities[i]+'">'+cities[i]+'</option>');
+        }
+
+
         $('.dataTables-example').dataTable({
             responsive: true
         });
@@ -127,42 +161,12 @@
     month = month(new Date());
     $("#month").append(month);
 
-    BillingList(monthInNumber, year);
-    checkUnpaid(month, year);
+    function BillingList(monthInNumber, year,city) {
 
-    function checkUnpaid(month, year) {
-        checkUnpaid = new XMLHttpRequest();
-        var server = "http://merkadu.tk/";
-        url = '/graph/checkUnpaid.php?username=' + username + '&password=' + password + '&month=' + month + '&year=' + year + '';
-        console.log(url);
-        checkUnpaid.open("GET", url);
-
-        checkUnpaid.send();
-
-
-        checkUnpaid.onreadystatechange = (e) => {
-
-            if (checkUnpaid.readyState == 4 && checkUnpaid.status == 200) {
-                data = JSON.parse(checkUnpaid.responseText);
-                console.log("unpaid1", data.data);
-                console.log("status", data.data[0].status);
-                 $("#status").empty();
-                 if(data.data){
-                    $("#status").append(data.data[0].status);
-                }else{
-                    $("#status").append("unpaid");
-                }
-
-            };
-
-        }
-    }
-
-    function BillingList(monthInNumber, year) {
         BillingList = new XMLHttpRequest();
         var server = "http://merkadu.tk/";
         monthInNumber = monthInNumber + 1;
-        url = '/graph/recievableTracker.php?username=' + username + '&password=' + password + '&month=' + monthInNumber + '&year=' + year + '&city=iligan';
+        url = '/graph/recievableTracker.php?username=' + username + '&password=' + password + '&month=' + monthInNumber + '&year=' + year + '&city='+city+'';
         console.log(url);
         BillingList.open("GET", url);
 
@@ -210,6 +214,107 @@
         }
     }
 
+     $('.wrapper').on('click', '#generateBilling', function() {
+
+
+
+        city = $("#citySearchProduct").val();
+            if(!city){
+                alert("Select a City");
+            }
+
+            $("#billingData").empty()
+            $("#totalBill").empty();
+            function BillingList(monthInNumber, year,city) {
+
+                BillingList = new XMLHttpRequest();
+                var server = "http://merkadu.tk/";
+                monthInNumber = monthInNumber + 1;
+                url = '/graph/recievableTracker.php?username=' + username + '&password=' + password + '&month=' + monthInNumber + '&year=' + year + '&city='+city+'';
+                console.log(url);
+                BillingList.open("GET", url);
+
+                BillingList.send();
+
+
+                BillingList.onreadystatechange = (e) => {
+
+                    if (BillingList.readyState == 4 && BillingList.status == 200) {
+                        data = JSON.parse(BillingList.responseText);
+                        console.log("BillingList", data);
+                        totalBill = [];
+
+                        for (var i = data.data.length - 1; i >= 0; i--) {
+                            firstName = data.data[i]["firstName"];
+                            id = data.data[i]["id"];
+                            lastName = data.data[i]["lastName"];
+                            Name = ''+firstName+' '+lastName+'';
+                            username = data.data[i]["username"];
+                            streetAddress = data.data[i]["streetAddress"];
+                            secondAddress = data.data[i]["secondAddress"];
+                            city = data.data[i]["city"];
+
+                            Address = ''+streetAddress+' '+secondAddress+' '+city+'';
+                            date = data.data[i]["date"];
+                            Bill = data.data[i]["totalBill"];
+                            /**
+                            totalSale = data.data[i]["totalPrice"];
+                            buyer = data.data[i]["buyer"];
+                            bill = Math.round(totalSale * .10) + 5;
+                            **/
+                            totalBill.push(Number(Bill));
+                            
+
+                            $("#billingData").append('<tr class="grade' + id + '"><td>'+username+'</td><td>' + Name + '</td><td>' + Address + ' </td><td>' + city + '</td><td class="center">' + date + '</td><td class="center">' + Bill + '</td></tr>');
+
+                        }
+
+                        totalBill = totalBill.reduce(function(a, b) { return a + b; }, 0);
+                        $("#totalBill").append(totalBill);
+                    };
+
+
+
+                }
+            }
+
+            BillingList(monthInNumber, year,city);
+            //alert(city);
+            //checkUnpaid(month, year);
+        });
+
+
+    
+
+    function checkUnpaid(month, year) {
+        checkUnpaid = new XMLHttpRequest();
+        var server = "http://merkadu.tk/";
+        url = '/graph/checkUnpaid.php?username=' + username + '&password=' + password + '&month=' + month + '&year=' + year + '';
+        console.log(url);
+        checkUnpaid.open("GET", url);
+
+        checkUnpaid.send();
+
+
+        checkUnpaid.onreadystatechange = (e) => {
+
+            if (checkUnpaid.readyState == 4 && checkUnpaid.status == 200) {
+                data = JSON.parse(checkUnpaid.responseText);
+                console.log("unpaid1", data.data);
+                console.log("status", data.data[0].status);
+                 $("#status").empty();
+                 if(data.data){
+                    $("#status").append(data.data[0].status);
+                }else{
+                    $("#status").append("unpaid");
+                }
+
+            };
+
+        }
+    }
+
+    
     startPage = 0;
     $('.wrapper').on('click', '#backwardProductList', function() {
         newPage = startPage + 1;
@@ -218,14 +323,15 @@
         month = monthNames[monthInNumber - 1];
         $("#month").empty();
         $("#month").append(month);
-        BillingList(monthInNumber, year);
+        city = $("#citySearchProduct").val();
+        BillingList(monthInNumber, year,city);
         checkUnpaid(month, year);
 
-        function BillingList(a, b) {
+        function BillingList(a, b,city) {
             $("#billingData").empty();
             BillingList = new XMLHttpRequest();
             var server = "http://merkadu.tk/";
-            url = '/graph/recievableTracker.php?username=' + username + '&password=' + password + '&month=' + a + '&year=' + b + '&city=iligan';
+            url = '/graph/recievableTracker.php?username=' + username + '&password=' + password + '&month=' + a + '&year=' + b + '&city='+city+'';
             console.log(url);
             BillingList.open("GET", url);
 
@@ -290,14 +396,15 @@
         month = monthNames[monthInNumber - 1];
         $("#month").empty();
         $("#month").append(month);
-        BillingList(monthInNumber, year);
+         city = $("#citySearchProduct").val();
+        BillingList(monthInNumber, year,city);
         checkUnpaid(month, year);
 
-        function BillingList(a, b) {
+        function BillingList(a, b,city) {
             $("#billingData").empty();
             BillingList = new XMLHttpRequest();
             var server = "http://merkadu.tk/";
-            url = '/graph/recievableTracker.php?username=' + username + '&password=' + password + '&month=' + a + '&year=' + b + '&city=iligan';
+            url = '/graph/recievableTracker.php?username=' + username + '&password=' + password + '&month=' + a + '&year=' + b + '&city='+city+'';
             console.log(url);
             BillingList.open("GET", url);
 

@@ -75,6 +75,14 @@
                         <a id="paymentCenter" href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">Cart</span></a>
                         <a id="billing" href="#"><i class="fa fa-angellist"></i> <span class="nav-label">Billing</span></a>
                     </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-star"></i> <span class="nav-label">Job Opening</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a id="manageRiders" href="#">Delivery Team</a></li>
+                        </ul>
+                    </li>
+
                     <!--
                     <li class="">
                         <a target="_blank" id="paymentCenter" href="#"><i class="fa fa-star"></i> <span class="nav-label">Delivery Team</span> <span class="label pull-right">NEW</span></a>
@@ -116,10 +124,12 @@
                             </a>
 
                             <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+                                <!--
                                 <li class="dropdown-header">
                                     <i class="ace-icon fa fa-exclamation-triangle"></i>
                                     <span class="incomingordernotification"> Notifications
                                 </li>
+                            -->
                                 <!--
                                 <li>
                                     <a href="#">
@@ -262,7 +272,8 @@
     <script src="js/plugins/chartJs/Chart.min.js"></script>
     <script>
     $(document).ready(function() {
-        
+        // Check If bought without account
+
          // Click on the checkbox
 
         server = window.location.hostname;
@@ -320,6 +331,14 @@
                     //console.log("cartList", );
                     $(".incomingordernotification").empty();
                     $(".incomingordernotification").append(data.data.length);
+                    if(data.data.length > 0){
+                        //alert(1);
+                        $(".incomingordernotification").addClass("badge-success");
+                    }else{
+                        $(".incomingordernotification").removeClass("badge-success");
+                        $(".incomingordernotification").removeClass("badge-important");
+                        $(".incomingordernotification").empty();
+                    }
 
                 };
             };
@@ -738,7 +757,43 @@
      // code here
     document.getElementById("searchProduct").click(); 
     });
+    
+
+     lastBuy = localStorage.getItem("lastBuy");
+        quantity = localStorage.getItem("quantity");
+        if(lastBuy){
+            
+            Http = new XMLHttpRequest();
+            //var server = "http://hantakserver/";
+            //var server = "http://merkadu/";
+            server = window.location.hostname;
+
+            url = '/graph/addToCart.php?username=' + username + '&password=' + password + '&productID=' + lastBuy + '&quantity=' + quantity + '';
+            console.log(url);
+            Http.open("GET", url);
+
+            Http.send();
+
+            Http.onreadystatechange = (e) => {
+
+                if (Http.readyState == 4 && Http.status == 200) {
+                    console.log(JSON.parse(Http.responseText));
+                    data = JSON.parse(Http.responseText);
+                    console.log("onbuy", data.status);
+                    if(data.status == 1){
+                        //localStorage.setItem("lastBuy","");
+                       //document.location = "managePayments.html";
+                       $("#paymentCenter").click(function(){
+                            $('#iframeContent').attr('src', 'managePayments.html');
+                        });
+                    }
+
+                };
+            };
+        }
     </script>
+
+
 
 
     </script>
