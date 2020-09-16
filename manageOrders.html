@@ -188,7 +188,7 @@
 
                     }else{
                         
-                        verification = '<div class="alert alert-danger" role="alert">UnVerified</div>'
+                        verification = '<div class="alert alert-danger" role="alert">Buyer Unverified</div>'
                     }
 
                     status = data.data[i]["status"];
@@ -213,7 +213,7 @@
 
                     
 
-                    $("#incomingOrderList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#">' + productName + '</a><br/><small>Product ID: ' + id + '</small><br><small>Created ' + date + '</small></td><td><td class="project-completion">'+verification+'<small>To:' + buyerFullName + '</small><br><small>Address:' + buyerAddress + '</small><br><small>Quantity:' + quantity + '</small><br>Mobile: '+buyerMobileNumber+'</br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"><h2>ID:'+purchasedID+' </h2> <strong></strong><a id="' + purchasedID + '"href="#" class="'+deliverProduct+' btn btn-white btn-sm"><i class="fa '+deliveryIcon+'"></i> '+deliveryMessage+' </a><a id="' + purchasedID + 'rider" href="#" class="'+riderCheck+' btn btn-white btn-sm"><i class="fa '+riderIcon+'"></i> '+riderMessage+'  </a></td></tr>');
+                    $("#incomingOrderList").append('<div class="incomingRow row"><div class="col-lg-2">'+verification+'<div class="alert alert-success" role="alert"><i class="fas fa-shield-alt"></i> '+status+'</div></div><div class="col-lg-2"><h1><a href="#">' + productName + '</a></h1><small>Product ID: ' + id + '</small><br><small>Created ' + date + '</small><small></div><div class="col-lg-2"><div class="project-completion"></div>To:' + buyerFullName + '</small><br><small>Address:' + buyerAddress + '</small><br><small>Quantity:' + quantity + '</small><br>Mobile: '+buyerMobileNumber+'</div><div class="col-lg-2"><h2>ID:'+purchasedID+' </h2> <strong></strong><a id="' + purchasedID + '"href="#" class="'+deliverProduct+' btn btn-white btn-sm"><i class="fa '+deliveryIcon+'"></i> '+deliveryMessage+' </a><a id="' + purchasedID + 'rider" href="#" class="'+riderCheck+' btn btn-white btn-sm"><i class="fa '+riderIcon+'"></i> '+riderMessage+'  </a></div></div>');
                     
 
 

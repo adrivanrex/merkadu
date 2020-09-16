@@ -5,6 +5,8 @@
  *   Copyright 2014 Webapplayers.com
  *
 */
+
+
 h1,
 h2,
 h3,
@@ -36,6 +38,13 @@ h4,
 h5 {
   margin-top: 5px;
   font-weight: 600;
+}
+
+.incomingRow{
+  background-color: white;
+  border: 1px solid #e7eaec;
+
+  padding: 14px 20px 14px 25px;
 }
 .nav > li > a {
   color: #a7b1c2;
@@ -3490,6 +3499,7 @@ a.compose-mail {
 .project-actions {
   text-align: right;
   vertical-align: middle;
+  padding-left: 200px;
 }
 dd.project-people {
   text-align: left;
