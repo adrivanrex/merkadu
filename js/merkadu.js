@@ -45,14 +45,20 @@ $(document).ready(function () {
     });
     $("#manageOrders").click(function(){
         $('#iframeContent').attr('src', 'manageOrders.html');
-        $("body").toggleClass("mini-navbar");
+         $("body").toggleClass("mini-navbar");
             SmoothlyMenu();
     });
 
     $(".manageOrders").click(function(){
         $('#iframeContent').attr('src', 'manageOrders.html');
-        $("body").toggleClass("mini-navbar");
+         $("body").toggleClass("mini-navbar");
             SmoothlyMenu();
+    });
+
+
+
+    $(".manageOrders").click(function(){
+        $('#iframeContent').attr('src', 'manageOrders.html');
     });
 
     $('#createStore').click(function(){

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>merkadu | Products</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body style="background-color: white">
+    <div class="row border-bottom">
+        <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInUp">
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <!--
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                        </div>
+                        -->
+                        <div class="col-md-11">
+                            <!--
+                            <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+                            </div>
+                            -->
+                    </div>
+
+                    <div class="btn-group">
+                                        <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+                                        <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+                                    </div>
+        </center>
+
+
+                    <div class="project-list">
+                        <table class="table table-hover">
+                            <div id="incomingOrderCheck"></div>
+                            <tbody id="incomingOrderList">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="btn-group">
+                                        <button id="backwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+                                        <button id="forwardProductList" class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+                                    </div>
+        </center>
+
+        
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    <script>
+    $(document).ready(function() {
+
+        $('#loading-example-btn').click(function() {
+            btn = $(this);
+            simpleLoad(btn, true)
+
+            // Ajax example
+            //                $.ajax().always(function () {
+            //                    simpleLoad($(this), false)
+            //                });
+
+            simpleLoad(btn, false)
+        });
+    });
+
+    function simpleLoad(btn, state) {
+        if (state) {
+            btn.children().addClass('fa-spin');
+            btn.contents().last().replaceWith(" Loading");
+        } else {
+            setTimeout(function() {
+                btn.children().removeClass('fa-spin');
+                btn.contents().last().replaceWith(" Refresh");
+            }, 2000);
+        }
+    }
+
+    getIncomingOrderList();
+    setInterval(function(){ getIncomingOrderList(); }, 10000);
+
+    
+
+    function getIncomingOrderList() {
+        incomingOrderList = new XMLHttpRequest();
+        var server = "http://merkadu.tk/";
+        url = '/graph/incomingRiderList.php?username=' + username + '&password=' + password + '';
+        console.log(url);
+        incomingOrderList.open("GET", url);
+
+        incomingOrderList.send();
+
+
+
+        incomingOrderList.onreadystatechange = (e) => {
+            
+            $("#incomingOrderList").empty();
+            if (incomingOrderList.readyState == 4 && incomingOrderList.status == 200) {
+            data = JSON.parse(incomingOrderList.responseText);
+            console.log("incoming", data);
+            if(data.data == 0){
+                $("#incomingOrderCheck").empty();
+                $("#incomingOrderCheck").append('<center><p>No incoming orders yet</p></center>');
+            }
+
+
+            fullName = '' + data.user[0]["firstName"] + ' ' + data.user[0]["lastName"] + '';
+            console.log(data.user);
+            address = '' + data.user[0]["streetAddress"] + ' ' + data.user[0]["secondAddress"] + ' ' + data.user[0]["state"] + ' ' + data.user[0]["city"] + '';
+            console.log("incoming");
+                for (var i = data.data.length - 1; i >= 0; i--) {
+                    //.data[i]
+                    
+                    buyerInfo = data.data[i]["buyerInfo"];
+                    
+                    buyerfirstName = data.data[i]["buyerInfo"][0]["firstName"];
+                    buyerLastName = data.data[i]["buyerInfo"][0]["lastName"];
+                    buyerFullName = '' + buyerfirstName + ' ' + buyerLastName + '';
+                    buyerStreetAddress = data.data[i]["buyerInfo"][0]["streetAddress"];
+                    buyerSecondAddress = data.data[i]["buyerInfo"][0]["secondAddress"];
+                    buyerInfoCity = data.data[i]["buyerInfo"][0]["city"];
+                    buyerAddress = '' + buyerStreetAddress + ' ' + buyerSecondAddress + ' ' + buyerInfoCity + '';
+                    purchasedID = data.data[i]["deliveryID"];
+                    buyerVerification = data.data[i]["buyerInfo"][0]["verified"];
+                    buyerMobileNumber = data.data[i]["buyerInfo"][0]["mobileNumber"];
+                    
+                    console.log("buyer info", buyerInfo);
+                    if(buyerVerification == "verified"){
+                        verification = '<div class="alert alert-success" role="alert"><i class="fas fa-shield-alt"></i> Verified</div>'
+
+                    }else{
+                        
+                        verification = '<div class="alert alert-danger" role="alert">UnVerified</div>'
+                    }
+
+                    status = data.data[i]["status"];
+                    occupant = data.data[i]["occupant"];
+                    if(status == "occupied"){
+                        deliveryMessage = 'Occupied by '+occupant+'';
+                        deliveryIcon = 'fa-car';
+                        deliverProduct = 'deliverProduct';
+
+                    }
+                    if(status == "Open"){
+                        deliveryMessage = "Accept Job";
+                        deliveryIcon = "fa-pencil";
+                        deliverProduct = "deliverProduct";
+                    }
+
+                    if(status == "Complete"){
+                        deliveryMessage = "Complete";
+                        deliveryIcon = 'fa-car';
+                        deliverProduct = "ab";
+                    }
+
+                    riderMessage = "Hire a rider";
+                    riderCheck = "hireRider";
+                    riderIcon = "fa-bicycle";
+
+                    $("#incomingOrderList").append('<tr><td class="project-status"><span class="label label-primary">'+status+'</span></td><td class="project-title"><a href="#"></a><br/></td><td><td class="project-completion">'+verification+'<small>To:' + buyerFullName + '</small><br><small>Address:' + buyerAddress + '</small><br><br>Mobile: '+buyerMobileNumber+'</br><!--<div class="progress progress-mini"><div style="width: 48%;" class="progress-bar"></div>--></div></td><td class="project-actions"><h2>ID:'+purchasedID+' </h2> <strong></strong><a id="' + purchasedID + '"href="#" class="'+deliverProduct+' btn btn-white btn-sm"><i class="fa '+deliveryIcon+'"></i> '+deliveryMessage+' </a></td></tr>');
+
+                }
+            };
+        }
+        $('.wrapper').on('click', '.hireRider', function() {
+            alert("hire");
+        });
+
+        $('.wrapper').on('click', '.deliverProduct', function() {
+            //alert(this.id);
+
+            
+            acceptIncomingDelivery = new XMLHttpRequest();
+            var server = "http://merkadu.tk/";
+            url = '/graph/acceptRiderJob.php?username=' + username + '&password=' + password + '&purchasedID='+this.id+'';
+            console.log(url);
+            acceptIncomingDelivery.open("GET", url);
+
+            acceptIncomingDelivery.send();
+
+
+
+            acceptIncomingDelivery.onreadystatechange = (e) => {
+                data = JSON.parse(acceptIncomingDelivery.responseText);
+                
+                if (acceptIncomingDelivery.readyState == 4 && acceptIncomingDelivery.status == 200) {
+                    console.log(data.status);
+                    if(data.status == 3){
+                        alert("Not allowed, You can apply as a rider by emailing adrivanrex@gmail.com");
+                    }
+                }
+            };
+
+        });
+    }
+    </script>
+</body>
+
+</html>
